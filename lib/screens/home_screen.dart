@@ -1,0 +1,99 @@
+import 'package:first_app/screens/pendigTasks.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../dialogs/addDialog.dart';
+import '../providers/TaskProvider.dart';
+import '../widgets/stats_row.dart';
+import 'allTasks.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int selectedItem = 0;
+  final List<Widget> pages = [AllTasks(), PendingTasks()];
+
+  @override
+  Widget build(BuildContext context) {
+
+    var taskProvider = context.watch<TaskProvider>();
+    int allTasks = taskProvider.tasks.length;
+    int doneTasks = taskProvider.tasks.where((t) => t['status']).length;
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
+
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(50)),
+            color: Colors.black87,
+          ),
+        ),
+        centerTitle: true,
+        title: Text(
+          "TaskyApp",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 26,
+            color: Colors.white,
+
+          ),
+        ),
+      ),
+
+      body:Column(
+        children: [
+          Expanded(child: pages[selectedItem]),
+        ],
+      ),
+
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showAddDialog(context);
+        },
+        shape: const CircleBorder(),
+        backgroundColor: Colors.black,
+        elevation: 3,
+        child: Icon(Icons.add, size: 40, color: Colors.white),
+      ),
+      bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+          borderRadius: BorderRadius.vertical( top: Radius.circular(50)),
+          color: Colors.black87,
+          ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          unselectedItemColor: Colors.white24,
+          selectedItemColor: Colors.white,
+          currentIndex: selectedItem,
+          onTap: (index) {
+            setState(() { selectedItem = index; });
+          },
+          items: const [
+            BottomNavigationBarItem(
+              label: "All Tasks",
+              icon: Icon(Icons.library_books_outlined),
+            ),
+            BottomNavigationBarItem(
+              label: "Pending Tasks",
+              icon: Icon(Icons.pending_actions_outlined),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
