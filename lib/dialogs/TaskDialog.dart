@@ -93,8 +93,6 @@ class _TaskDialogState extends State<TaskDialog> {
                 _buildColorButton(orange),
                 // Yellow button
                 _buildColorButton(yellow),
-                //
-                _buildColorButton(Colors.white70)
               ],
             ),
           ],
