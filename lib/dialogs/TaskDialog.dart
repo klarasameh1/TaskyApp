@@ -22,6 +22,8 @@ class TaskDialog extends StatefulWidget {
 
 class _TaskDialogState extends State<TaskDialog> {
   late Color selectedPriority;
+  late TextEditingController nameController ;
+  late TextEditingController descController ;
 
   final Color red = Colors.redAccent.shade100;
   final Color orange = Colors.orangeAccent.shade100;
@@ -31,13 +33,14 @@ class _TaskDialogState extends State<TaskDialog> {
   void initState() {
     super.initState();
     selectedPriority = widget.initialPriority; // Initialize here
+
+     nameController = TextEditingController(text: widget.initialName);
+     descController = TextEditingController(text: widget.initialDescription);
+
   }
 
   @override
   Widget build(BuildContext context) {
-    final nameController = TextEditingController(text: widget.initialName);
-    final descController = TextEditingController(text: widget.initialDescription);
-
 
     return AlertDialog(
       backgroundColor: Colors.white,
@@ -111,7 +114,7 @@ class _TaskDialogState extends State<TaskDialog> {
                   return;
                 }
                 widget.onSubmit(nameController.text, descController.text , selectedPriority);
-                Navigator.of(context).pop();
+                Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black87,
