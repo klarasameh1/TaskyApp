@@ -19,7 +19,7 @@ class TaskProvider with ChangeNotifier {
   }
 
   void addTask(String name, String desc, Color? priority) {
-    _tasks.add({
+    _tasks.insert(0,{
       'name': name,
       'status': false,
       'Desc': desc.isNotEmpty ? desc : "no description yet",
