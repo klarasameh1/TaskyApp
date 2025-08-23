@@ -53,7 +53,10 @@ class PendingTasks extends StatelessWidget {
                       },
                       onExpand: (){
                         final originalIndex = taskProvider.tasks.indexOf(task);
-                        expandDialog(context , originalIndex);
+                        showDialog(
+                          context: context,
+                          builder: (context) => expandDialog(context, i),
+                        );
                       },
                     ),
                   );

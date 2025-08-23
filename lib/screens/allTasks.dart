@@ -37,7 +37,10 @@ class AllTasks extends StatelessWidget {
               onToggle: () => taskProvider.toggleStatus(i),
               onEdit: () => showEditDialog(context, i),
               onDelete: () => taskProvider.deleteTask(i),
-              onExpand: () => expandDialog(context , i),
+              onExpand: () => showDialog(
+                context: context,
+                builder: (context) => expandDialog(context, i),
+              )
             ),
           );
         },
