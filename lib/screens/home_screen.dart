@@ -21,10 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-    var taskProvider = context.watch<TaskProvider>();
-    int allTasks = taskProvider.tasks.length;
-    int doneTasks = taskProvider.tasks.where((t) => t['status']).length;
-
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -35,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         flexibleSpace: Container(
           decoration: const BoxDecoration(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(50)),
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
             color: Colors.black87,
           ),
         ),
@@ -53,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       body:Column(
         children: [
+          SizedBox(height: 10,),
           Expanded(child: pages[selectedItem]),
         ],
       ),
@@ -70,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: Container(
           decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical( top: Radius.circular(50)),
+          borderRadius: BorderRadius.vertical( top: Radius.circular(30)),
           color: Colors.black87,
           ),
         child: BottomNavigationBar(

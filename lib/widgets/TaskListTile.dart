@@ -25,6 +25,8 @@ class TaskListTile extends StatefulWidget {
 }
 
 class _TaskListTileState extends State<TaskListTile> {
+  bool doneClick = false ;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -38,12 +40,17 @@ class _TaskListTileState extends State<TaskListTile> {
         height: MediaQuery.of(context).size.height*0.15,
         child: ListTile(
           leading: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 100),
             transitionBuilder: (child, animation) =>
                 ScaleTransition(scale: animation, child: child), // Nice zoom effect
-            child: widget.isDone
-                ? Icon(Icons.check_circle, color: Colors.green)
-                : Icon(Icons.radio_button_unchecked, color: Color(0xff3b3b3b)),
+            child:
+            IconButton(
+                onPressed:(){doneClick=!doneClick ; widget.onToggle();} ,
+
+                icon : (doneClick)?
+                  Icon(Icons.check_circle , color: Colors.green)
+                : Icon(Icons.radio_button_unchecked, color: Color(0xff3b3b3b))
+            )
           ),
           title: Text(
             widget.name,
@@ -62,6 +69,7 @@ class _TaskListTileState extends State<TaskListTile> {
               decoration: widget.isDone ? TextDecoration.lineThrough: null,
               color: widget.isDone ? Colors.grey.shade500 : Colors.black,
               decorationThickness: 1.5,
+            overflow: TextOverflow.ellipsis
             ),
           ),
           trailing: Row(
@@ -77,7 +85,7 @@ class _TaskListTileState extends State<TaskListTile> {
               ),
             ],
           ),
-          onTap: widget.onToggle,
+          // onTap: widget.onToggle, // will be for showing details
         ),
       ),
     );
