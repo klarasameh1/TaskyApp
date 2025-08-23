@@ -45,5 +45,4 @@ class TaskProvider with ChangeNotifier {
     _tasks.clear();
     notifyListeners();
   }
-
 }

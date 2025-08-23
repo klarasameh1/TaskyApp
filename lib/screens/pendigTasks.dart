@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../dialogs/editDialog.dart';
+import '../dialogs/expandDialog.dart';
 import '../widgets/TaskListTile.dart';
 import '../providers/TaskProvider.dart';
-import 'home_screen.dart';
 
 class PendingTasks extends StatelessWidget {
   const PendingTasks({super.key});
@@ -50,6 +50,10 @@ class PendingTasks extends StatelessWidget {
                       onDelete: () {
                         final originalIndex = taskProvider.tasks.indexOf(task);
                         taskProvider.deleteTask(originalIndex);
+                      },
+                      onExpand: (){
+                        final originalIndex = taskProvider.tasks.indexOf(task);
+                        expandDialog(context , originalIndex);
                       },
                     ),
                   );

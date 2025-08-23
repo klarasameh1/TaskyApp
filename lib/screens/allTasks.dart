@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../dialogs/editDialog.dart';
+import '../dialogs/expandDialog.dart';
 import '../widgets/TaskListTile.dart';
 import '../providers/TaskProvider.dart';
-import 'home_screen.dart';
-import 'pendigTasks.dart';
+
 
 class AllTasks extends StatelessWidget {
   const AllTasks({super.key});
@@ -37,6 +37,7 @@ class AllTasks extends StatelessWidget {
               onToggle: () => taskProvider.toggleStatus(i),
               onEdit: () => showEditDialog(context, i),
               onDelete: () => taskProvider.deleteTask(i),
+              onExpand: () => expandDialog(context , i),
             ),
           );
         },

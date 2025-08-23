@@ -8,6 +8,7 @@ class TaskListTile extends StatefulWidget {
   final VoidCallback onEdit;
   final VoidCallback onDelete;
   final Color priority ;
+  final VoidCallback onExpand;
 
   const TaskListTile({
     super.key,
@@ -18,6 +19,8 @@ class TaskListTile extends StatefulWidget {
     required this.onEdit,
     required this.onDelete,
     required this.priority,
+    required this.onExpand,
+
   });
 
   @override
@@ -85,7 +88,7 @@ class _TaskListTileState extends State<TaskListTile> {
               ),
             ],
           ),
-          // onTap: widget.onToggle, // will be for showing details
+          onTap: widget.onExpand
         ),
       ),
     );
