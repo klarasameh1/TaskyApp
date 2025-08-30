@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class TaskProvider with ChangeNotifier {
   final List<Map<String, dynamic>> _tasks = [
-    {'name': 'Database', 'status': false , 'Desc' : 'none' , 'Priority' : Colors.white70 },
-    {'name': 'Software', 'status': false , 'Desc' : 'none' ,  'Priority' : Colors.white70},
-    {'name': 'Web', 'status': false, 'Desc' : 'none' , 'Priority' : Colors.white70},
-    {'name': 'Data Structure', 'status': false, 'Desc' : 'none' , 'Priority' : Colors.white70},
-    {'name': 'Social Issues', 'status': false, 'Desc' : 'none' , 'Priority' : Colors.white70},
-    {'name': 'Database', 'status': false , 'Desc' : 'none' , 'Priority' : Colors.white70},
+    {'name': 'Database', 'status': false , 'Desc' : 'none' , 'Priority' : Colors.white },
+    {'name': 'Software', 'status': false , 'Desc' : 'none' ,  'Priority' : Colors.white},
+    {'name': 'Web', 'status': false, 'Desc' : 'none' , 'Priority' : Colors.white},
+    {'name': 'Data Structure', 'status': false, 'Desc' : 'none' , 'Priority' : Colors.white},
+    {'name': 'Social Issues', 'status': false, 'Desc' : 'none' , 'Priority' : Colors.white},
+    {'name': 'Database', 'status': false , 'Desc' : 'none' , 'Priority' : Colors.white},
 
   ];
 
@@ -23,7 +23,7 @@ class TaskProvider with ChangeNotifier {
       'name': name,
       'status': false,
       'Desc': desc.isNotEmpty ? desc : "no description yet",
-    'Priority': priority ?? Colors.white70,
+    'Priority': priority ?? Colors.white,
     });
     notifyListeners();
   }

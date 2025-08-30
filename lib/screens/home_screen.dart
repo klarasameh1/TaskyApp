@@ -25,17 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
 
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
-            color: Colors.black87,
-          ),
-        ),
         centerTitle: true,
+
         title: Text(
           "TaskyApp",
           style: TextStyle(
@@ -67,8 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: Container(
           decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical( top: Radius.circular(30)),
-          color: Colors.black87,
+          color: Colors.black,
           ),
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
