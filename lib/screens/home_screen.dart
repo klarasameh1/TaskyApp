@@ -1,5 +1,7 @@
+import 'package:first_app/providers/TaskProvider.dart';
 import 'package:first_app/screens/pendigTasks.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../dialogs/addDialog.dart';
 import 'allTasks.dart';
 
@@ -36,6 +38,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.read<TaskProvider>().clearTasklist();
+            },
+            icon: const Icon(Icons.delete_sweep_outlined, color: Colors.white),
+          )
+        ],
+
       ),
 
       body:Column(
