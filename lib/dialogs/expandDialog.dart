@@ -18,16 +18,16 @@ import '../providers/TaskProvider.dart';
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              task['name'] ,
+              task.name ,
               style: TextStyle(
                   fontWeight: FontWeight.bold ,
                   fontSize: 30 ,
                   color: Colors.black
               ),
+              overflow: TextOverflow.ellipsis, // ✅ prevent overflow
             ),
             SizedBox(width: 8,),
-            Icon(Icons.circle , color: task['Priority'], size: 40,),
-
+            Icon(Icons.circle , color: task.priority, size: 40,),
           ],
         )
     ),
@@ -48,19 +48,18 @@ import '../providers/TaskProvider.dart';
               strokeAlign : BorderSide.strokeAlignInside,
             )
           ),
-          child:
-          Center(
-            child: Text(
-              task['Desc'],
-              style: TextStyle(
-                  fontSize: 22 ,
-                  color: Colors.black87
+          child: Center(
+            child: SingleChildScrollView( // ✅ scroll if desc is too long
+              child: Text(
+                task.desc,
+                style: const TextStyle(
+                  fontSize: 22,
+                  color: Colors.black87,
+                ),
               ),
             ),
           ),
         ),
-        SizedBox(height: 10,),
-
         const SizedBox(height: 20),
       ],
     ),

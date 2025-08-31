@@ -11,9 +11,9 @@ void showEditDialog(BuildContext context, int index) {
     builder:
         (_) => TaskDialog(
       title: "Edit Task", // title of dialog
-      initialName: task['name'],
-      initialDescription: task['Desc'],
-      initialPriority: task['Priority'],
+      initialName: task.name,
+      initialDescription: task.desc,
+      initialPriority: task.priority,
       onSubmit: (name, desc , priority) {
         taskProvider.updateTask(index, name, desc , priority);
       },

@@ -1,10 +1,6 @@
 import 'package:first_app/screens/pendigTasks.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import '../dialogs/addDialog.dart';
-import '../providers/TaskProvider.dart';
-import '../widgets/stats_row.dart';
 import 'allTasks.dart';
 
 class HomeScreen extends StatefulWidget {

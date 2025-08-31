@@ -30,11 +30,9 @@ class AllTasks extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: TaskListTile(
-              name: task['name'],
-              description: task['Desc'],
-              isDone: task['status'],
-              priority: task['Priority'],
-              onToggle: () => taskProvider.toggleStatus(i),
+                key: ValueKey(task.id), // 👈 important for correct rebuilds
+                task: task,
+                onToggle: () => taskProvider.toggleStatus(i),
               onEdit: () => showEditDialog(context, i),
               onDelete: () => taskProvider.deleteTask(i),
               onExpand: () => showDialog(

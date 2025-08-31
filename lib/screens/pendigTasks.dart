@@ -14,7 +14,7 @@ class PendingTasks extends StatelessWidget {
 
     // Filter tasks: only tasks where status == false
     final pendingTasks =
-        taskProvider.tasks.where((task) => task['status'] == false).toList();
+        taskProvider.tasks.where((task) => task.status == false).toList();
 
     return Padding(
       padding: const EdgeInsets.only(right: 30 , left: 30),
@@ -34,10 +34,9 @@ class PendingTasks extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: TaskListTile(
-                      name: task['name'],
-                      description: task['Desc'],
-                      isDone: task['status'],
-                      priority: task['Priority'],
+                      key: ValueKey(task.id), // 👈 important for correct rebuilds
+                      task: task,
+
                       onToggle: () {
                         // Find original index in full list
                         final originalIndex = taskProvider.tasks.indexOf(task);
