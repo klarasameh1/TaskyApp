@@ -32,24 +32,37 @@ import '../providers/TaskProvider.dart';
         )
     ),
 
-    content: SizedBox(
-      width: MediaQuery.of(context).size.width*0.8,
-      height: MediaQuery.of(context).size.height*0.4,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(height: 10,),
-          Text(
-            task['Desc'],
-            style: TextStyle(
-                fontWeight: FontWeight.bold ,
-                fontSize: 22 ,
-                color: Colors.black87
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width*0.8,
+          height: MediaQuery.of(context).size.height*0.4,
+
+          decoration:  BoxDecoration(
+            border:
+            Border.all(
+              color: Colors.black,
+              width: 2,
+              style: BorderStyle.solid,
+              strokeAlign : BorderSide.strokeAlignInside,
+            )
+          ),
+          child:
+          Center(
+            child: Text(
+              task['Desc'],
+              style: TextStyle(
+                  fontSize: 22 ,
+                  color: Colors.black87
+              ),
             ),
           ),
-          const SizedBox(height: 20),
-        ],
-      ),
+        ),
+        SizedBox(height: 10,),
+
+        const SizedBox(height: 20),
+      ],
     ),
 
     actions: [
