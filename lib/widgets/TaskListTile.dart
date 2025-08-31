@@ -22,7 +22,6 @@ class TaskListTile extends StatefulWidget {
 }
 
 class _TaskListTileState extends State<TaskListTile> {
-  bool doneClick = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +41,12 @@ class _TaskListTileState extends State<TaskListTile> {
             transitionBuilder: (child, animation) =>
                 ScaleTransition(scale: animation, child: child),
             child: IconButton(
-              onPressed: () {
-                setState(() => doneClick = !doneClick);
-                widget.onToggle();
-              },
-              icon: (widget.task.status || doneClick)
+              onPressed: widget.onToggle,
+              icon: widget.task.status
                   ? const Icon(Icons.check_circle, color: Colors.green)
-                  : const Icon(Icons.radio_button_unchecked,
-                  color: Color(0xff3b3b3b)),
-            ),
+                  : const Icon(Icons.radio_button_unchecked, color: Color(0xff3b3b3b)),
+            )
+
           ),
           title: Text(
             widget.task.name,
