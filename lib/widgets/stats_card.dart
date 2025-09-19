@@ -1,35 +1,45 @@
 import 'package:flutter/material.dart';
 
 class StatsCard extends StatelessWidget {
-  final String title ;
+  final String name;
   final int count;
-  final IconData icon;
 
-  const StatsCard({super.key, this.title = '', this.count = 0, required this.icon});
+  const StatsCard({
+    super.key,
+    this.name = '',
+    this.count = 0,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      elevation: 6,
-      color: Colors.grey,
+      color: Colors.black12,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.3,
-        height: MediaQuery.of(context).size.height * 0.1,
-        padding: const EdgeInsets.all(5),
+        width: MediaQuery.of(context).size.width * 0.85,
+        height: 100,
+        padding: const EdgeInsets.all(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white, size: 25),
-            const SizedBox(height: 5),
+            const SizedBox(height: 8),
             Text(
-              title,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+              "Hello $name 👋",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
               overflow: TextOverflow.ellipsis,
             ),
             Text(
-              count > 0 ? "$count" : "",
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+              count > 0
+                  ? "You have $count tasks to do"
+                  : "No tasks yet 🎉",
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black87,
+              ),
             ),
           ],
         ),

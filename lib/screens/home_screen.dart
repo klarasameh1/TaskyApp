@@ -3,10 +3,13 @@ import 'package:first_app/screens/pendigTasks.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../dialogs/addDialog.dart';
+import '../widgets/stats_card.dart';
 import 'allTasks.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required String userName});
+  final String userName; // ✅ store the username here
+
+  const HomeScreen({super.key, required this.userName});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -18,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -26,16 +28,13 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.black,
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
-
         centerTitle: true,
-
-        title: Text(
+        title: const Text(
           "TaskyApp",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 26,
             color: Colors.white,
-
           ),
         ),
         actions: [
@@ -46,16 +45,19 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.delete_sweep_outlined, color: Colors.white),
           )
         ],
-
       ),
 
-      body:Column(
+      body: Column(
         children: [
-          SizedBox(height: 10,),
+          const SizedBox(height: 10),
+          StatsCard(
+            name: widget.userName,
+            count: TaskProvider().tasks.length, // you can pass actual task count from provider later
+          ),
+          const SizedBox(height: 10),
           Expanded(child: pages[selectedItem]),
         ],
       ),
-
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
@@ -65,12 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
         shape: const CircleBorder(),
         backgroundColor: Colors.black,
         elevation: 3,
-        child: Icon(Icons.add, size: 40, color: Colors.white),
+        child: const Icon(Icons.add, size: 40, color: Colors.white),
       ),
       bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.black,
-          ),
+        ),
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -78,7 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedItemColor: Colors.white,
           currentIndex: selectedItem,
           onTap: (index) {
-            setState(() { selectedItem = index; });
+            setState(() {
+              selectedItem = index;
+            });
           },
           items: const [
             BottomNavigationBarItem(
