@@ -109,7 +109,7 @@ class _TaskDialogState extends State<TaskDialog> {
               onPressed: () {
                 if (nameController.text.trim().isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Task name is required")),
+                    const SnackBar(content: Text("Task name is required") , duration: Duration(seconds: 5),),
                   );
                   return;
                 }

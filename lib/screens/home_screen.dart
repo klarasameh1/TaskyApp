@@ -6,7 +6,7 @@ import '../dialogs/addDialog.dart';
 import 'allTasks.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required String userName});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

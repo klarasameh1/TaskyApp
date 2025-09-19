@@ -1,3 +1,4 @@
+import 'package:first_app/screens/welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/TaskProvider.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         // fontFamily: 'Outfit',
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home: const WelcomePage(),
     );
   }
 }
