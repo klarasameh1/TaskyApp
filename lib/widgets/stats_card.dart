@@ -14,11 +14,13 @@ class StatsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      color: Colors.black12,
+      color: Colors.transparent,
+      shadowColor: Colors.black,
+      elevation: 6,
       child: Container(
         width: MediaQuery.of(context).size.width * 0.85,
-        height: 100,
-        padding: const EdgeInsets.all(12),
+        height: 150,
+        padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -26,7 +28,7 @@ class StatsCard extends StatelessWidget {
             Text(
               "Hello $name 👋",
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -37,7 +39,7 @@ class StatsCard extends StatelessWidget {
                   ? "You have $count tasks to do"
                   : "No tasks yet 🎉",
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 color: Colors.black87,
               ),
             ),
