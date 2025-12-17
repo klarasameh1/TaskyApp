@@ -7,7 +7,7 @@ import '../widgets/stats_card.dart';
 import 'allTasks.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String userName; // ✅ store the username here
+  final String userName; //  store the username here
 
   const HomeScreen({super.key, required this.userName});
 
@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
             name: widget.userName,
             count: TaskProvider().tasks.length, // you can pass actual task count from provider later
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
           Expanded(child: pages[selectedItem]),
         ],
       ),

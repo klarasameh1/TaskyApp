@@ -54,10 +54,25 @@ class _TaskDialogState extends State<TaskDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 10,),
+            Row(
+              children: [
+                const Text(
+                  "Priority: ",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                // Red button
+                _buildColorButton(red),
+                // Orange button
+                _buildColorButton(orange),
+                // Yellow button
+                _buildColorButton(yellow),
+              ],
+            ),
+            SizedBox(height: 10,),
             TextField(
               controller: nameController,
               decoration: InputDecoration(
-                hintText: "Task name",
+                hintText: "Title",
                 filled: true,
                 fillColor: Colors.grey[100],
                 border: OutlineInputBorder(
@@ -84,20 +99,6 @@ class _TaskDialogState extends State<TaskDialog> {
               ),
             ),
             const SizedBox(height: 14),
-            Row(
-              children: [
-                const Text(
-                  "Priority: ",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                // Red button
-                _buildColorButton(red),
-                // Orange button
-                _buildColorButton(orange),
-                // Yellow button
-                _buildColorButton(yellow),
-              ],
-            ),
           ],
         ),
       ),

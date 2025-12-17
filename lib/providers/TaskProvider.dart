@@ -8,10 +8,9 @@ class TaskProvider with ChangeNotifier {
     Task(id: 3, name: 'Quiz'),
     Task(id: 4, name: 'Internship'),
     Task(id: 5, name: 'Flutter project'),
-    Task(id: 6, name: 'Grocery'),
   ];
 
-  int _nextId = 7; // for new tasks
+  int _nextId = 6; // for new tasks
 
   List<Task> get tasks => _tasks;
 
