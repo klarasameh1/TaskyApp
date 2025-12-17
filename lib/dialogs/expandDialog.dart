@@ -27,7 +27,7 @@ import '../providers/TaskProvider.dart';
               overflow: TextOverflow.ellipsis, // ✅ prevent overflow
             ),
             SizedBox(width: 8,),
-            Icon(Icons.circle , color: task.priority, size: 40,),
+            Icon(Icons.circle , color: task.priorityColor, size: 40,),
           ],
         )
     ),

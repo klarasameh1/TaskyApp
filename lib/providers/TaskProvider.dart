@@ -7,88 +7,64 @@ class TaskProvider with ChangeNotifier {
 
   List<Task> get tasks => _tasks;
 
-  // load tasks from DB
+  // Load all tasks from DB
   Future<void> loadTasks() async {
     final data = await TaskDB.getTasks();
     _tasks.clear();
 
     for (var row in data) {
-      _tasks.add(Task(
-        id: row["id"],
-        name: row["name"],
-        desc: row["desc"],
-        status: row["status"] == 1,
-        priority: Color(row["priority"]),
-      ));
+      _tasks.add(Task.fromMap(row));
     }
 
     notifyListeners();
   }
 
+  // Add a new task
   Future<void> addTask(String name, String desc, Color priority) async {
-    final id = await TaskDB.insertTask({
-      "name": name,
-      "desc": desc,
-      "priority": priority.value,
-      "status": 0,
-    });
-
-    _tasks.insert(
-      0,
-      Task(
-        id: id,              // 👈 use real DB id
-        name: name,
-        desc: desc,
-        priority: priority,
-        status: false,
-      ),
+    final task = Task(
+      name: name,
+      desc: desc.isNotEmpty ? desc : "No description yet",
+      priority: priority.value,
+      status: false,
     );
+
+    final id = await TaskDB.insertTask(task.toMap());
+    task.id = id; // set the auto-generated DB id
+    _tasks.insert(0, task);
 
     notifyListeners();
   }
 
-
+  // Toggle status (done/pending)
   Future<void> toggleStatus(int index) async {
     var task = _tasks[index];
     task.status = !task.status;
 
-    await TaskDB.updateTask({
-      "id": task.id,
-      "name": task.name,
-      "desc": task.desc,
-      "status": task.status ? 1 : 0,
-      "priority": task.priority.value,
-    });
-
+    await TaskDB.updateTask(task.toMap());
     notifyListeners();
   }
 
+  // Update task details
   Future<void> updateTask(int index, String name, String desc, Color priority) async {
     var task = _tasks[index];
-
     task.name = name;
-    task.desc = desc;
-    task.priority = priority;
+    task.desc = desc.isNotEmpty ? desc : "No description yet";
+    task.priority = priority.value;
 
-    await TaskDB.updateTask({
-      "id": task.id,
-      "name": name,
-      "desc": desc,
-      "status": task.status ? 1 : 0,
-      "priority": priority.value,
-    });
-
+    await TaskDB.updateTask(task.toMap());
     notifyListeners();
   }
 
+  // Delete a task
   Future<void> deleteTask(int index) async {
     final task = _tasks[index];
-    await TaskDB.deleteTask(task.id);
+    await TaskDB.deleteTask(task.id!);
 
     _tasks.removeAt(index);
     notifyListeners();
   }
 
+  // Clear all tasks
   Future<void> clearTaskList() async {
     await TaskDB.clearTasks();
     _tasks.clear();

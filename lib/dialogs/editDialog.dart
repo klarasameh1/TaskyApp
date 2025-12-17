@@ -13,7 +13,7 @@ void showEditDialog(BuildContext context, int index) {
       title: "Edit Task", // title of dialog
       initialName: task.name,
       initialDescription: task.desc,
-      initialPriority: task.priority,
+      initialPriority: task.priorityColor,
       onSubmit: (name, desc , priority) {
         taskProvider.updateTask(index, name, desc , priority);
       },
