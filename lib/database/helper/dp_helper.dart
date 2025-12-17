@@ -20,7 +20,7 @@ class DBHelper {
       version: 1,
       onCreate: (db, version) async {
         await db.execute('''
-          CREATE TABLE notes (
+          CREATE TABLE tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT,
             content TEXT
@@ -32,16 +32,16 @@ class DBHelper {
 
   static Future<int> insert(String title, String content) async {
     final db = await database;
-    return db.insert("notes", {"title": title, "content": content});
+    return db.insert("tasks", {"title": title, "content": content});
   }
 
   static Future<List<Map<String, dynamic>>> getNotes() async {
     final db = await database;
-    return db.query("notes");
+    return db.query("tasks");
   }
 
   static Future<int> delete(int id) async {
     final db = await database;
-    return db.delete("notes", where: "id = ?", whereArgs: [id]);
+    return db.delete("tasks", where: "id = ?", whereArgs: [id]);
   }
 }

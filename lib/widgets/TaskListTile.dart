@@ -31,7 +31,7 @@ class _TaskListTileState extends State<TaskListTile> {
       ),
       color: widget.task.status
           ? Colors.green.shade100
-          : widget.task.priority, // ✅ use Task object
+          : widget.task.priority,
       elevation: 6,
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.15,

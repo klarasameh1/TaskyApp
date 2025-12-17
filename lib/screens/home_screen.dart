@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              context.read<TaskProvider>().clearTasklist();
+              Provider.of<TaskProvider>(context, listen: false).clearTaskList();
             },
             icon: const Icon(Icons.delete_sweep_outlined, color: Colors.white),
           )

@@ -14,7 +14,7 @@ void showAddDialog(BuildContext context) {
       title: "Add Task", // title of dialog
       initialPriority: Colors.white70,
       onSubmit: (name, desc, priority) {
-        context.read<TaskProvider>().addTask(name, desc, priority);
+        taskProvider.addTask(name, desc, priority);
       },
     ),
   );
