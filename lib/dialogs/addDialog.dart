@@ -13,8 +13,8 @@ void showAddDialog(BuildContext context) {
     builder: (_) => TaskDialog(
       title: "Add Task", // title of dialog
       initialPriority: Colors.white70,
-      onSubmit: (name, desc, priority) {
-        taskProvider.addTask(name, desc, priority);
+      onSubmit: (name, desc, priority,date) {
+        taskProvider.addTask(name, desc, priority, date);
       },
     ),
   );

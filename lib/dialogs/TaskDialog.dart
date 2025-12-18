@@ -4,8 +4,9 @@ class TaskDialog extends StatefulWidget {
   final String title;
   final String initialName;
   final String initialDescription;
+  final String date;
   final Color initialPriority;
-  final Function(String, String, Color) onSubmit;
+  final Function(String, String, Color, String) onSubmit;
 
   const TaskDialog({
     super.key,
@@ -13,6 +14,7 @@ class TaskDialog extends StatefulWidget {
     this.initialName = '',
     this.initialDescription = '',
     this.initialPriority = Colors.white70,
+    this.date = '',
     required this.onSubmit,
   });
 
@@ -24,6 +26,7 @@ class _TaskDialogState extends State<TaskDialog> {
   late Color selectedPriority;
   late TextEditingController nameController ;
   late TextEditingController descController ;
+  late String selectedDate;
 
   final Color red = Colors.redAccent.shade100;
   final Color orange = Colors.orangeAccent.shade100;
@@ -32,12 +35,32 @@ class _TaskDialogState extends State<TaskDialog> {
   @override
   void initState() {
     super.initState();
-    selectedPriority = widget.initialPriority; // Initialize here
+    selectedPriority = widget.initialPriority;
 
-     nameController = TextEditingController(text: widget.initialName);
-     descController = TextEditingController(text: widget.initialDescription);
+    nameController = TextEditingController(text: widget.initialName);
+    descController = TextEditingController(text: widget.initialDescription);
 
+    selectedDate = widget.date.isEmpty
+        ? DateTime.now().toString().substring(0,10)
+        : widget.date;
   }
+
+  Future<void> pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+    );
+
+    if (picked != null) {
+      setState(() {
+        selectedDate = picked.toString().substring(0,10);
+      });
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +122,27 @@ class _TaskDialogState extends State<TaskDialog> {
               ),
             ),
             const SizedBox(height: 14),
+
+            GestureDetector(
+              onTap: pickDate, // opens calendar
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.calendar_today, size: 20, color: Colors.black87),
+                  const SizedBox(width: 10),
+                  Text(
+                    selectedDate,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -114,7 +158,12 @@ class _TaskDialogState extends State<TaskDialog> {
                   );
                   return;
                 }
-                widget.onSubmit(nameController.text, descController.text , selectedPriority);
+                widget.onSubmit(
+                  nameController.text.trim(),
+                  descController.text.trim(),
+                  selectedPriority,
+                  selectedDate,
+                );
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(

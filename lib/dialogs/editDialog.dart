@@ -14,8 +14,8 @@ void showEditDialog(BuildContext context, int index) {
       initialName: task.name,
       initialDescription: task.desc,
       initialPriority: task.priorityColor,
-      onSubmit: (name, desc , priority) {
-        taskProvider.updateTask(index, name, desc , priority);
+      onSubmit: (name, desc , priority, date) {
+        taskProvider.updateTask(index, name, desc , priority , date);
       },
     ),
   );

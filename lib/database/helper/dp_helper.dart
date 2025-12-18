@@ -24,6 +24,7 @@ class TaskDB {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             desc TEXT,
+            date TEXT NOT NULL,
             priority INTEGER,
             status INTEGER
           )

@@ -20,10 +20,14 @@ class TaskProvider with ChangeNotifier {
   }
 
   // Add a new task
-  Future<void> addTask(String name, String desc, Color priority) async {
+  Future<void> addTask(String name, String desc, Color priority, String date) async {
+    // Generate current date for this task
+    final String currentDate = DateTime.now().toString().substring(0,10);
+
     final task = Task(
       name: name,
       desc: desc.isNotEmpty ? desc : "No description yet",
+      date: date,   // use the freshly generated date
       priority: priority.value,
       status: false,
     );
@@ -35,6 +39,7 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
   }
 
+
   // Toggle status (done/pending)
   Future<void> toggleStatus(int index) async {
     var task = _tasks[index];
@@ -45,11 +50,12 @@ class TaskProvider with ChangeNotifier {
   }
 
   // Update task details
-  Future<void> updateTask(int index, String name, String desc, Color priority) async {
+  Future<void> updateTask(int index, String name, String desc, Color priority , String date) async {
     var task = _tasks[index];
     task.name = name;
     task.desc = desc.isNotEmpty ? desc : "No description yet";
     task.priority = priority.value;
+    task.date= date;
 
     await TaskDB.updateTask(task.toMap());
     notifyListeners();
