@@ -20,6 +20,14 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> pages = [AllTasks(), PendingTasks()];
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<TaskProvider>(context, listen: false).loadTasks();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -52,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 10),
           StatsCard(
             name: widget.userName,
-            count: TaskProvider().tasks.length, // you can pass actual task count from provider later
+            count: context.watch<TaskProvider>().tasks.length,
           ),
           const SizedBox(height: 15),
           Expanded(child: pages[selectedItem]),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/Task.dart';
-import '../database/helper/taskDb.dart';
+import '../database/helper/dp_helper.dart';
 
 class TaskProvider with ChangeNotifier {
   final List<Task> _tasks = [];
@@ -21,31 +21,26 @@ class TaskProvider with ChangeNotifier {
 
   // Add a new task
   Future<void> addTask(String name, String desc, Color priority, String date) async {
-    // Generate current date for this task
-    final String currentDate = DateTime.now().toString().substring(0,10);
-
     final task = Task(
       name: name,
       desc: desc.isNotEmpty ? desc : "No description yet",
-      date: date,   // use the freshly generated date
+      date: date.isEmpty ? DateTime.now().toString().substring(0,10) : date,
       priority: priority.value,
       status: false,
     );
 
-    final id = await TaskDB.insertTask(task.toMap());
-    task.id = id; // set the auto-generated DB id
+    final id = await TaskDB.insertTask(task);
+    task.id = id;          // set DB id
     _tasks.insert(0, task);
-
     notifyListeners();
   }
-
 
   // Toggle status (done/pending)
   Future<void> toggleStatus(int index) async {
     var task = _tasks[index];
     task.status = !task.status;
 
-    await TaskDB.updateTask(task.toMap());
+    await TaskDB.updateTask(task);
     notifyListeners();
   }
 
@@ -57,7 +52,7 @@ class TaskProvider with ChangeNotifier {
     task.priority = priority.value;
     task.date= date;
 
-    await TaskDB.updateTask(task.toMap());
+    await TaskDB.updateTask(task);
     notifyListeners();
   }
 

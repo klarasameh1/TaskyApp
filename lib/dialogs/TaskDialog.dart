@@ -151,7 +151,7 @@ class _TaskDialogState extends State<TaskDialog> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ElevatedButton(
-              onPressed: () {
+              onPressed: ()  {
                 if (nameController.text.trim().isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Task name is required") , duration: Duration(seconds: 5),),
@@ -159,8 +159,8 @@ class _TaskDialogState extends State<TaskDialog> {
                   return;
                 }
                 widget.onSubmit(
-                  nameController.text.trim(),
-                  descController.text.trim(),
+                  nameController.text,
+                  descController.text,
                   selectedPriority,
                   selectedDate,
                 );

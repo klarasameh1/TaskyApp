@@ -24,9 +24,9 @@ class AllTasks extends StatelessWidget {
         ),
       )
           : ListView.builder(
-        itemCount: taskProvider.tasks.length,
+        itemCount: Provider.of<TaskProvider>(context).tasks.length,
         itemBuilder: (context, i) {
-          final task = taskProvider.tasks[i];
+          final task = Provider.of<TaskProvider>(context).tasks[i];
           return Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: TaskListTile(
