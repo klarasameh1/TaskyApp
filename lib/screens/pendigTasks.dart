@@ -12,7 +12,12 @@ class PendingTasks extends StatelessWidget {
   const PendingTasks({super.key, required this.tasks, required this.refresh});
 
   Future<void> toggleStatus(Task task) async {
-    await DBHelper.updateTaskStatus(task.id!, !task.status);
+    await DBHelper.updateTaskStatus(task.id!, task.status);
+    refresh();
+  }
+
+  Future<void> archiveTask(Task task) async {
+    await DBHelper.updateTaskStatus(task.id!, 2);
     refresh();
   }
 
@@ -23,7 +28,7 @@ class PendingTasks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pendingTasks = tasks.where((task) => !task.status).toList();
+    final pendingTasks = tasks.where((task) => task.status==0).toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -47,6 +52,7 @@ class PendingTasks extends StatelessWidget {
               onToggle: () => toggleStatus(task),
               onEdit: () => showEditDialog(context, task, refresh),
               onDelete: () => deleteTask(task),
+              onArchive: () => archiveTask(task),
               onExpand: () => showDialog(
                 context: context,
                 builder: (_) => expandDialog(context, task),

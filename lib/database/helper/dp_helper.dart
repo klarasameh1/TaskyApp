@@ -47,18 +47,18 @@ class DBHelper {
   }
 
   // Get tasks
-  static Future<List<Task>> getTasks({bool? completed}) async {
+  static Future<List<Task>> getTasks({int? status}) async {
     final db = await database;
 
     List<Map<String, dynamic>> res;
 
-    if (completed == null) {
+    if (status == null) {
       res = await db.query('tasks', orderBy: 'id DESC');
     } else {
       res = await db.query(
         'tasks',
         where: 'status = ?',
-        whereArgs: [completed ? 1 : 0],
+        whereArgs: [status],
         orderBy: 'id DESC',
       );
     }
@@ -79,11 +79,11 @@ class DBHelper {
   }
 
   // Update task status
-  static Future<int> updateTaskStatus(int id, bool status) async {
+  static Future<int> updateTaskStatus(int id, int status) async {
     final db = await database;
     return db.update(
       "tasks",
-      {"status": status ? 1 : 0},
+      {"status": status },
       where: "id = ?",
       whereArgs: [id],
     );

@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 10),
           StatsCard(
             name: widget.userName,
-            count: tasks.where((task) => !task.status).length,
+            count: tasks.where((task) => task.status==0).length,
           ),
           const SizedBox(height: 15),
           Expanded(

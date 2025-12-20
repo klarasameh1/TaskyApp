@@ -12,9 +12,25 @@ class AllTasks extends StatelessWidget {
   const AllTasks({super.key, required this.tasks, required this.refresh});
 
   Future<void> toggleStatus(Task task) async {
-    await DBHelper.updateTaskStatus(task.id!, !task.status);
+    int newStatus;
+
+    if (task.status == 0) {
+      newStatus = 1; // pending -> completed
+    } else if (task.status == 1) {
+      newStatus = 0; // completed -> pending
+    } else {
+      newStatus = task.status; // archived stays archived
+    }
+
+    await DBHelper.updateTaskStatus(task.id!, newStatus);
     refresh(); //reload ALL tasks from database
   }
+
+  Future<void> archiveTask(Task task) async {
+    await DBHelper.updateTaskStatus(task.id!, 2);
+    refresh();
+  }
+
 
   Future<void> deleteTask(Task task) async {
     await DBHelper.deleteTask(task.id!);
@@ -44,6 +60,7 @@ class AllTasks extends StatelessWidget {
               task: task,
               onToggle: () => toggleStatus(task),
               onEdit: () => showEditDialog(context, task, refresh),
+              onArchive: () => archiveTask(task),
               onDelete: () => deleteTask(task),
               onExpand: () => showDialog(
                 context: context,

@@ -6,7 +6,7 @@ class Task {
   String desc;
   String date;
   Color priority;
-  bool status;
+  int status; // 0 pending - 1 done - 2 archive
 
   Task({
     this.id,
@@ -14,7 +14,7 @@ class Task {
     required this.desc,
     required this.date,
     required this.priority,
-    this.status = false,
+    this.status = 0,
   });
 
   factory Task.fromMap(Map<String, dynamic> map) {
@@ -38,7 +38,7 @@ class Task {
       desc: map['desc'] ?? '',
       date: map['date'] ?? DateTime.now().toString().substring(0, 10),
       priority: priorityColor,
-      status: map['status'] == 1,
+      status: map['status'] ,
     );
   }
 
@@ -48,6 +48,6 @@ class Task {
     'desc': desc,
     'date': date,
     'priority': priority.value,
-    'status': status ? 1 : 0,
+    'status': status ,
   };
 }
