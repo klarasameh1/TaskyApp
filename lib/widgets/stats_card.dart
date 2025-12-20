@@ -30,81 +30,76 @@ class StatsCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Stack(
-        children: [
-
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.waving_hand,
-                      size: 28,
+                Icon(
+                  Icons.waving_hand,
+                  size: 28,
+                  color: Colors.black,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    "Hello, $name!" ,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        "Hello, $name!" ,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: count > 0 ? Colors.red.shade100 : Colors.green.shade100,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        count > 0 ? Icons.pending_actions : Icons.check_circle,
-                        size: 28,
-                        color: count > 0 ? Colors.red.shade800 : Colors.green.shade800,
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            count > 0 ? "Pending Tasks" : "All Done!",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black.withOpacity(0.7),
-                            ),
-                          ),
-                          Text(
-                            count > 0 ? "$count tasks waiting" : "Great work!",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: count > 0 ? Colors.red.shade800 : Colors.green.shade800,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
-          ),
-        ],
+            const SizedBox(height: 15),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: count > 0 ? Colors.red.shade100 : Colors.green.shade100,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    count > 0 ? Icons.pending_actions : Icons.check_circle,
+                    size: 28,
+                    color: count > 0 ? Colors.red.shade800 : Colors.green.shade800,
+                  ),
+                ),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        count > 0 ? "Pending Tasks" : "All Done!",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black.withOpacity(0.7),
+                        ),
+                      ),
+                      Text(
+                        count > 0 ? "$count tasks waiting" : "Great work!",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: count > 0 ? Colors.red.shade800 : Colors.green.shade800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
