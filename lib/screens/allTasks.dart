@@ -11,15 +11,14 @@ class AllTasks extends StatelessWidget {
 
   const AllTasks({super.key, required this.tasks, required this.refresh});
 
-  Future<void> toggleStatus(int index) async {
-    final task = tasks[index];
+  Future<void> toggleStatus(Task task) async {
     await DBHelper.updateTaskStatus(task.id!, !task.status);
-    refresh();
+    refresh(); // This will reload ALL tasks from database
   }
 
-  Future<void> deleteTask(int index) async {
-    await DBHelper.deleteTask(tasks[index].id!);
-    refresh();
+  Future<void> deleteTask(Task task) async {
+    await DBHelper.deleteTask(task.id!);
+    refresh(); // This will reload ALL tasks from database
   }
 
   @override
@@ -43,9 +42,9 @@ class AllTasks extends StatelessWidget {
             child: TaskListTile(
               key: ValueKey(task.id),
               task: task,
-              onToggle: () => toggleStatus(i),
+              onToggle: () => toggleStatus(task),
               onEdit: () => showEditDialog(context, task, refresh),
-              onDelete: () => deleteTask(i),
+              onDelete: () => deleteTask(task),
               onExpand: () => showDialog(
                 context: context,
                 builder: (_) => expandDialog(context, task),

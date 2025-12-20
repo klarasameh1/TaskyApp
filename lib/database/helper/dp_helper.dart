@@ -14,7 +14,8 @@ class DBHelper {
   static Future<Database> _initDB() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, "tasks.db");
-    return openDatabase(
+
+    return await openDatabase(
       path,
       version: 1,
       onCreate: (db, version) async {
@@ -23,7 +24,7 @@ class DBHelper {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             desc TEXT,
-            date TEXT NOT NULL,
+            date TEXT,
             priority INTEGER,
             status INTEGER
           )
@@ -35,7 +36,7 @@ class DBHelper {
   // Insert task
   static Future<int> insertTask(Task task) async {
     final db = await database;
-    return db.insert("tasks", task.toMap());
+    return await db.insert("tasks", task.toMap());
   }
 
   // Get tasks
@@ -45,26 +46,31 @@ class DBHelper {
     List<Map<String, dynamic>> res;
 
     if (completed == null) {
-      res = await db.query('tasks');
+      res = await db.query('tasks', orderBy: 'id DESC');
     } else {
       res = await db.query(
         'tasks',
         where: 'status = ?',
         whereArgs: [completed ? 1 : 0],
+        orderBy: 'id DESC',
       );
     }
 
     return res.map((e) => Task.fromMap(e)).toList();
   }
 
-  // Update full task
+  // Update task
   static Future<int> updateTask(Task task) async {
     final db = await database;
-    return db.update("tasks", task.toMap(),
-        where: "id = ?", whereArgs: [task.id]);
+    return db.update(
+        "tasks",
+        task.toMap(),
+        where: "id = ?",
+        whereArgs: [task.id]
+    );
   }
 
-  // Update only status
+  // Update task status
   static Future<int> updateTaskStatus(int id, bool status) async {
     final db = await database;
     return db.update(
@@ -81,7 +87,7 @@ class DBHelper {
     return db.delete("tasks", where: "id = ?", whereArgs: [id]);
   }
 
-  // Clear all
+  // Clear all tasks
   static Future<void> clearTasks() async {
     final db = await database;
     await db.delete("tasks");

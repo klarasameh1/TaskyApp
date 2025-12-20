@@ -6,25 +6,23 @@ import '../database/helper/dp_helper.dart';
 void showAddDialog(BuildContext context, VoidCallback refresh) {
   showDialog(
     context: context,
-    builder: (dialogContext) {
-      return TaskDialog(
-        title: "Add Task",
-        initialPriority: Colors.white70,
-        onSubmit: (name, desc, priority, date) async {
-          final newTask = Task(
-            name: name,
-            desc: desc.isNotEmpty ? desc : "No description yet",
-            date: date.isEmpty ? DateTime.now().toString().substring(0, 10) : date,
-            priority: priority,
-            status: false,
-          );
-          await DBHelper.insertTask(newTask);
+    builder: (context) => TaskDialog(
+      title: "Add Task",
+      initialPriority: const Color(0xB3FFFFFF), // Use Color constructor for white70
+      onSubmit: (name, desc, priority, date) async {
+        final newTask = Task(
+          name: name,
+          desc: desc.isNotEmpty ? desc : "No description yet",
+          date: date.isNotEmpty ? date : DateTime.now().toString().substring(0, 10),
+          priority: priority,
+          status: false,
+        );
 
-          refresh(); // refresh task list
-          Navigator.pop(dialogContext);
-        },
-      );
-    },
+        print('Adding task: ${newTask.name}, priority: ${priority.value}');
+        await DBHelper.insertTask(newTask);
+        refresh(); // refresh task list
+
+      },
+    ),
   );
 }
-

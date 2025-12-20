@@ -13,7 +13,7 @@ class TaskDialog extends StatefulWidget {
     required this.title,
     this.initialName = '',
     this.initialDescription = '',
-    this.initialPriority = Colors.white70,
+    this.initialPriority = const Color(0xB3FFFFFF), // white70
     this.date = '',
     required this.onSubmit,
   });
@@ -24,25 +24,34 @@ class TaskDialog extends StatefulWidget {
 
 class _TaskDialogState extends State<TaskDialog> {
   late Color selectedPriority;
-  late TextEditingController nameController ;
-  late TextEditingController descController ;
+  late TextEditingController nameController;
+  late TextEditingController descController;
   late String selectedDate;
 
-  final Color red = Colors.redAccent.shade100;
-  final Color orange = Colors.orangeAccent.shade100;
-  final Color yellow = Colors.yellowAccent.shade100;
+  // Priority colors
+  final List<Color> priorityColors = [
+    Colors.red.shade200,
+    Colors.orange.shade200,
+    Colors.yellow.shade200,
+    const Color(0xB3FFFFFF), // white70
+  ];
 
   @override
   void initState() {
     super.initState();
     selectedPriority = widget.initialPriority;
-
     nameController = TextEditingController(text: widget.initialName);
     descController = TextEditingController(text: widget.initialDescription);
-
     selectedDate = widget.date.isEmpty
-        ? DateTime.now().toString().substring(0,10)
+        ? DateTime.now().toString().substring(0, 10)
         : widget.date;
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    descController.dispose();
+    super.dispose();
   }
 
   Future<void> pickDate() async {
@@ -55,43 +64,45 @@ class _TaskDialogState extends State<TaskDialog> {
 
     if (picked != null) {
       setState(() {
-        selectedDate = picked.toString().substring(0,10);
+        selectedDate = picked.toString().substring(0, 10);
       });
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
     return AlertDialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20)
+        borderRadius: BorderRadius.circular(20),
       ),
-      title: Center(child: Text(widget.title , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 22 , color: Colors.black87),)),
+      title: Center(
+        child: Text(
+          widget.title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.black87,
+          ),
+        ),
+      ),
       content: SizedBox(
-        width: MediaQuery.of(context).size.width*0.8,
+        width: MediaQuery.of(context).size.width * 0.8,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(height: 10,),
+            SizedBox(height: 10),
             Row(
               children: [
                 const Text(
                   "Priority: ",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                // Red button
-                _buildColorButton(red),
-                // Orange button
-                _buildColorButton(orange),
-                // Yellow button
-                _buildColorButton(yellow),
+                // Color buttons
+                ...priorityColors.map((color) => _buildColorButton(color)),
               ],
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 10),
             TextField(
               controller: nameController,
               decoration: InputDecoration(
@@ -111,7 +122,7 @@ class _TaskDialogState extends State<TaskDialog> {
               minLines: 2,
               expands: false,
               textInputAction: TextInputAction.newline,
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 hintText: "Description",
                 filled: true,
                 fillColor: Colors.grey[100],
@@ -122,13 +133,13 @@ class _TaskDialogState extends State<TaskDialog> {
               ),
             ),
             const SizedBox(height: 14),
-
             GestureDetector(
-              onTap: pickDate, // opens calendar
+              onTap: pickDate,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.calendar_today, size: 20, color: Colors.black87),
+                  const Icon(Icons.calendar_today,
+                      size: 20, color: Colors.black87),
                   const SizedBox(width: 10),
                   Text(
                     selectedDate,
@@ -140,8 +151,6 @@ class _TaskDialogState extends State<TaskDialog> {
                 ],
               ),
             ),
-
-
             const SizedBox(height: 20),
           ],
         ),
@@ -151,16 +160,19 @@ class _TaskDialogState extends State<TaskDialog> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ElevatedButton(
-              onPressed: ()  {
+              onPressed: () {
                 if (nameController.text.trim().isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Task name is required") , duration: Duration(seconds: 5),),
+                    const SnackBar(
+                      content: Text("Task name is required"),
+                      duration: Duration(seconds: 2),
+                    ),
                   );
                   return;
                 }
                 widget.onSubmit(
-                  nameController.text,
-                  descController.text,
+                  nameController.text.trim(),
+                  descController.text.trim(),
                   selectedPriority,
                   selectedDate,
                 );
@@ -170,18 +182,28 @@ class _TaskDialogState extends State<TaskDialog> {
                 backgroundColor: Colors.black87,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               ),
-              child:  Text("Save", style: TextStyle(color: Colors.white , fontSize: 16) ),
+              child: Text(
+                "Save",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("Cancel", style: TextStyle(color: Color(0xff3b3b3b) , fontSize: 16 , fontWeight: FontWeight.bold)),
+              child: const Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Color(0xff3b3b3b),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
-
       ],
     );
   }
+
   Widget _buildColorButton(Color color) {
     return GestureDetector(
       onTap: () => setState(() => selectedPriority = color),
@@ -190,7 +212,9 @@ class _TaskDialogState extends State<TaskDialog> {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: selectedPriority == color ? Colors.black : Colors.transparent,
+            color: selectedPriority.value == color.value
+                ? Colors.black
+                : Colors.transparent,
             width: 2,
           ),
         ),

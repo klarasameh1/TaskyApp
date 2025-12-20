@@ -22,7 +22,6 @@ class TaskListTile extends StatefulWidget {
 }
 
 class _TaskListTileState extends State<TaskListTile> {
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -32,8 +31,6 @@ class _TaskListTileState extends State<TaskListTile> {
       color: widget.task.status
           ? Colors.green.shade100
           : widget.task.priority,
-
-
       elevation: 6,
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.15,
@@ -43,12 +40,13 @@ class _TaskListTileState extends State<TaskListTile> {
             transitionBuilder: (child, animation) =>
                 ScaleTransition(scale: animation, child: child),
             child: IconButton(
+              key: ValueKey(widget.task.status),
               onPressed: widget.onToggle,
               icon: widget.task.status
                   ? const Icon(Icons.check_circle, color: Colors.green)
-                  : const Icon(Icons.radio_button_unchecked, color: Color(0xff3b3b3b)),
-            )
-
+                  : const Icon(Icons.radio_button_unchecked,
+                  color: Color(0xff3b3b3b)),
+            ),
           ),
           title: Text(
             widget.task.name,

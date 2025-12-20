@@ -18,25 +18,54 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedItem = 0;
   List<Task> tasks = [];
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    loadTasks();
+    _loadTasks();
   }
 
-  Future<void> loadTasks() async {
-    final loaded = await DBHelper.getTasks();
-    setState(() {
-      tasks = loaded;
-    });
+  Future<void> _loadTasks() async {
+    if (isLoading) return;
+
+    setState(() => isLoading = true);
+
+    try {
+      print('Loading tasks from DB...');
+      final loaded = await DBHelper.getTasks();
+      print('Loaded ${loaded.length} tasks');
+      setState(() => tasks = loaded);
+    } catch (e) {
+      print('Error loading tasks: $e');
+    } finally {
+      setState(() => isLoading = false);
+    }
   }
 
-  Future<void> clearTasks() async {
-    await DBHelper.clearTasks();
-    setState(() {
-      tasks.clear();
-    });
+  Future<void> _clearTasks() async {
+    final confirmed = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Clear All Tasks"),
+        content: const Text("Are you sure you want to delete all tasks?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text("Clear", style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await DBHelper.clearTasks();
+      await _loadTasks();
+    }
   }
 
   @override
@@ -59,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: clearTasks,
+            onPressed: _clearTasks,
             icon: const Icon(Icons.delete_sweep_outlined, color: Colors.white),
           ),
         ],
@@ -69,27 +98,31 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 10),
           StatsCard(
             name: widget.userName,
-            count: tasks.length,
+            count: tasks.where((task) => !task.status).length,
           ),
           const SizedBox(height: 15),
           Expanded(
-            child: selectedItem == 0
+            child: isLoading
+                ? const Center(
+              child: CircularProgressIndicator(
+                color: Colors.black,
+              ),
+            )
+                : selectedItem == 0
                 ? AllTasks(
               tasks: tasks,
-              refresh: loadTasks,
+              refresh: _loadTasks,
             )
                 : PendingTasks(
               tasks: tasks,
-              refresh: loadTasks,
+              refresh: _loadTasks,
             ),
           )
-
-
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showAddDialog(context, loadTasks),
+        onPressed: () => showAddDialog(context, _loadTasks),
         shape: const CircleBorder(),
         backgroundColor: Colors.black,
         elevation: 3,
@@ -105,11 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
           unselectedItemColor: Colors.white24,
           selectedItemColor: Colors.white,
           currentIndex: selectedItem,
-          onTap: (index) {
-            setState(() {
-              selectedItem = index;
-            });
-          },
+          onTap: (index) => setState(() => selectedItem = index),
           items: const [
             BottomNavigationBarItem(
               label: "All Tasks",

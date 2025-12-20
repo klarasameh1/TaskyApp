@@ -24,7 +24,6 @@ void showEditDialog(BuildContext context, Task task, VoidCallback refresh) {
 
         await DBHelper.updateTask(updatedTask); // update DB
         refresh(); // refresh task list in UI
-        Navigator.pop(context); // close dialog
       },
     ),
   );
