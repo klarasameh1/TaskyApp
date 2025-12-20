@@ -1,13 +1,13 @@
-import 'package:first_app/providers/TaskProvider.dart';
-import 'package:first_app/screens/pendigTasks.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../dialogs/addDialog.dart';
 import '../widgets/stats_card.dart';
 import 'allTasks.dart';
+import 'pendigTasks.dart';
+import '../database/helper/dp_helper.dart';
+import '../models/Task.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String userName; //  store the username here
+  final String userName;
 
   const HomeScreen({super.key, required this.userName});
 
@@ -17,13 +17,31 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedItem = 0;
-  final List<Widget> pages = [AllTasks(), PendingTasks()];
+  List<Task> tasks = [];
+  final List<Widget> pages = [];
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TaskProvider>(context, listen: false).loadTasks();
+    pages.addAll([
+      AllTasks(),
+      PendingTasks(tasks: tasks, refresh: loadTasks)
+
+    ]);
+    loadTasks();
+  }
+
+  Future<void> loadTasks() async {
+    final loaded = await DBHelper.getTasks();
+    setState(() {
+      tasks = loaded;
+    });
+  }
+
+  Future<void> clearTasks() async {
+    await DBHelper.clearTasks();
+    setState(() {
+      tasks.clear();
     });
   }
 
@@ -47,31 +65,29 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              Provider.of<TaskProvider>(context, listen: false).clearTaskList();
-            },
+            onPressed: clearTasks,
             icon: const Icon(Icons.delete_sweep_outlined, color: Colors.white),
-          )
+          ),
         ],
       ),
-
       body: Column(
         children: [
           const SizedBox(height: 10),
           StatsCard(
             name: widget.userName,
-            count: context.watch<TaskProvider>().tasks.length,
+            count: tasks.length,
           ),
           const SizedBox(height: 15),
-          Expanded(child: pages[selectedItem]),
+          Expanded(
+            child: selectedItem == 0
+                ? AllTasks()
+                : PendingTasks(tasks: tasks, refresh: loadTasks),
+          ),
         ],
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showAddDialog(context);
-        },
+        onPressed: () => showAddDialog(context, loadTasks),
         shape: const CircleBorder(),
         backgroundColor: Colors.black,
         elevation: 3,

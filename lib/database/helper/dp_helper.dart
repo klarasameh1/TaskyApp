@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../../models/Task.dart';
 
-class TaskDB {
+class DBHelper {
   static Database? _db;
 
   static Future<Database> get database async {
@@ -14,7 +14,6 @@ class TaskDB {
   static Future<Database> _initDB() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, "tasks.db");
-
     return openDatabase(
       path,
       version: 1,
@@ -33,36 +32,56 @@ class TaskDB {
     );
   }
 
-  // Insert a Task
+  // Insert task
   static Future<int> insertTask(Task task) async {
     final db = await database;
     return db.insert("tasks", task.toMap());
   }
 
-  // Get all Tasks
-  static Future<List<Map<String, dynamic>>> getTasks() async {
+  // Get tasks
+  static Future<List<Task>> getTasks({bool? completed}) async {
     final db = await database;
-    return db.query("tasks", orderBy: "id DESC");
+
+    List<Map<String, dynamic>> res;
+
+    if (completed == null) {
+      res = await db.query('tasks');
+    } else {
+      res = await db.query(
+        'tasks',
+        where: 'status = ?',
+        whereArgs: [completed ? 1 : 0],
+      );
+    }
+
+    return res.map((e) => Task.fromMap(e)).toList();
   }
 
-  // Update a Task
+  // Update full task
   static Future<int> updateTask(Task task) async {
+    final db = await database;
+    return db.update("tasks", task.toMap(),
+        where: "id = ?", whereArgs: [task.id]);
+  }
+
+  // Update only status
+  static Future<int> updateTaskStatus(int id, bool status) async {
     final db = await database;
     return db.update(
       "tasks",
-      task.toMap(),
+      {"status": status ? 1 : 0},
       where: "id = ?",
-      whereArgs: [task.id],
+      whereArgs: [id],
     );
   }
 
-  // Delete a Task
+  // Delete task
   static Future<int> deleteTask(int id) async {
     final db = await database;
     return db.delete("tasks", where: "id = ?", whereArgs: [id]);
   }
 
-  // Clear all tasks
+  // Clear all
   static Future<void> clearTasks() async {
     final db = await database;
     await db.delete("tasks");

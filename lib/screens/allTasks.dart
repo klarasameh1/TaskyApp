@@ -1,44 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../dialogs/editDialog.dart';
 import '../dialogs/expandDialog.dart';
 import '../widgets/TaskListTile.dart';
-import '../providers/TaskProvider.dart';
+import '../database/helper/dp_helper.dart';
+import '../models/Task.dart';
 
-
-class AllTasks extends StatelessWidget {
+class AllTasks extends StatefulWidget {
   const AllTasks({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var taskProvider = context.watch<TaskProvider>();
+  State<AllTasks> createState() => _AllTasksState();
+}
 
+class _AllTasksState extends State<AllTasks> {
+  List<Task> tasks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadTasks();
+  }
+
+  Future<void> loadTasks() async {
+    final loaded = await DBHelper.getTasks();
+    setState(() {
+      tasks = loaded;
+    });
+  }
+
+  Future<void> toggleStatus(int index) async {
+    final task = tasks[index];
+    await DBHelper.updateTaskStatus(task.id!, !task.status);
+    loadTasks();
+  }
+
+  Future<void> deleteTask(int index) async {
+    await DBHelper.deleteTask(tasks[index].id!);
+    setState(() {
+      tasks.removeAt(index);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only( right: 30 , left: 30),
-      child: taskProvider.tasks.isEmpty
-          ?  Center(
-        child: Icon(
-          Icons.pending_actions,
-          color: Colors.grey,
-          size: 40,
-        ),
-      )
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: tasks.isEmpty
+          ? const Center(
+          child: Icon(
+            Icons.pending_actions,
+            color: Colors.grey,
+            size: 40,
+          ))
           : ListView.builder(
-        itemCount: Provider.of<TaskProvider>(context).tasks.length,
+        itemCount: tasks.length,
         itemBuilder: (context, i) {
-          final task = Provider.of<TaskProvider>(context).tasks[i];
+          final task = tasks[i];
           return Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: TaskListTile(
-                key: ValueKey(task.id), // 👈 important for correct rebuilds
-                task: task,
-                onToggle: () => taskProvider.toggleStatus(i),
-              onEdit: () => showEditDialog(context, i),
-              onDelete: () => taskProvider.deleteTask(i),
+              key: ValueKey(task.id),
+              task: task,
+              onToggle: () => toggleStatus(i),
+              onEdit: () => showEditDialog(context, task, loadTasks),
+              onDelete: () => deleteTask(i),
               onExpand: () => showDialog(
                 context: context,
-                builder: (context) => expandDialog(context, i),
-              )
+                builder: (_) => expandDialog(context, task),
+              ),
             ),
           );
         },

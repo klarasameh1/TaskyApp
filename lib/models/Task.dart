@@ -1,43 +1,32 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 class Task {
   int? id;
   String name;
   String desc;
-  String date;
-  int priority;   // store color as int
+  String date; // stored as YYYY-MM-DD
+  Color priority; // Flutter Color
   bool status;
 
   Task({
     this.id,
     required this.name,
-    this.desc = "no description yet",
+    required this.desc,
     required this.date,
-    this.priority = 0xFFFFFFFF, // white
+    required this.priority,
     this.status = false,
   });
 
-  Map<String,dynamic> toMap() {
-    return {
-      "id": id,
-      "name": name,
-      "desc": desc,
-      "date": date,
-      "priority": priority,
-      "status": status ? 1 : 0,
-    };
-  }
+  // Convert Task to Map for DB storage
+  factory Task.fromMap(Map<String, dynamic> map) => Task(
+    id: map['id'],
+    name: map['name'] ?? '',
+    desc: map['desc'] ?? '',
+    date: map['date'] ?? DateTime.now().toString().substring(0,10),
+    priority: map['priority'] != null ? Color(map['priority']) : Colors.white70,
+    status: map['status'] == 1,
+  );
 
-  factory Task.fromMap(Map<String,dynamic> map) {
-    return Task(
-      id: map["id"],
-      name: map["name"],
-      desc: map["desc"],
-      date: map['date'],
-      priority: map["priority"],
-      status: map["status"] == 1,
-    );
-  }
-
-  Color get priorityColor => Color(priority);
+  Map<String, dynamic> toMap() => {'id': id, 'name': name, 'desc': desc , 'date': date, 'priority':priority.value ,'status': status?1:0};
 }
+

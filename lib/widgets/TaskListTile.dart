@@ -31,7 +31,7 @@ class _TaskListTileState extends State<TaskListTile> {
       ),
       color: widget.task.status
           ? Colors.green.shade100
-          : widget.task.priorityColor,
+          : widget.task.priority,
 
 
       elevation: 6,
