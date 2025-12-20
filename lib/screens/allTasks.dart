@@ -13,12 +13,12 @@ class AllTasks extends StatelessWidget {
 
   Future<void> toggleStatus(Task task) async {
     await DBHelper.updateTaskStatus(task.id!, !task.status);
-    refresh(); // This will reload ALL tasks from database
+    refresh(); //reload ALL tasks from database
   }
 
   Future<void> deleteTask(Task task) async {
     await DBHelper.deleteTask(task.id!);
-    refresh(); // This will reload ALL tasks from database
+    refresh(); //reload ALL tasks from database
   }
 
   @override

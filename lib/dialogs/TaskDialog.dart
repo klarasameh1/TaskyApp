@@ -33,7 +33,7 @@ class _TaskDialogState extends State<TaskDialog> {
     Colors.red.shade200,
     Colors.orange.shade200,
     Colors.yellow.shade200,
-    const Color(0xB3FFFFFF), // white70
+    const Color(0xB3FFFFFF),
   ];
 
   @override
@@ -45,13 +45,6 @@ class _TaskDialogState extends State<TaskDialog> {
     selectedDate = widget.date.isEmpty
         ? DateTime.now().toString().substring(0, 10)
         : widget.date;
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    descController.dispose();
-    super.dispose();
   }
 
   Future<void> pickDate() async {

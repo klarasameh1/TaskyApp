@@ -34,7 +34,6 @@ class _WelcomePageState extends State<WelcomePage> {
                 children: [
                   const SizedBox(height: 20),
 
-                  /// App Title
                   Text(
                     "Tasky App",
                     textAlign: TextAlign.center,

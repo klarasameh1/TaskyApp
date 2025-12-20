@@ -16,31 +16,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int selectedItem = 0;
+  int selectedItem = 0; //index for the bottom navbar
   List<Task> tasks = [];
-  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _loadTasks();
+    _loadTasks(); //load tasks when screen is opened
   }
 
   Future<void> _loadTasks() async {
-    if (isLoading) return;
-
-    setState(() => isLoading = true);
-
-    try {
-      print('Loading tasks from DB...');
-      final loaded = await DBHelper.getTasks();
-      print('Loaded ${loaded.length} tasks');
+      final loaded = await DBHelper.getTasks(); //fetch from sqlite
       setState(() => tasks = loaded);
-    } catch (e) {
-      print('Error loading tasks: $e');
-    } finally {
-      setState(() => isLoading = false);
-    }
   }
 
   Future<void> _clearTasks() async {
@@ -102,13 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 15),
           Expanded(
-            child: isLoading
-                ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.black,
-              ),
-            )
-                : selectedItem == 0
+            child: selectedItem == 0
                 ? AllTasks(
               tasks: tasks,
               refresh: _loadTasks,

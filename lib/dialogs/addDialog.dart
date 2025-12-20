@@ -8,7 +8,7 @@ void showAddDialog(BuildContext context, VoidCallback refresh) {
     context: context,
     builder: (context) => TaskDialog(
       title: "Add Task",
-      initialPriority: const Color(0xB3FFFFFF), // Use Color constructor for white70
+      initialPriority: const Color(0xB3FFFFFF),
       onSubmit: (name, desc, priority, date) async {
         final newTask = Task(
           name: name,
@@ -18,7 +18,6 @@ void showAddDialog(BuildContext context, VoidCallback refresh) {
           status: false,
         );
 
-        print('Adding task: ${newTask.name}, priority: ${priority.value}');
         await DBHelper.insertTask(newTask);
         refresh(); // refresh task list
 
