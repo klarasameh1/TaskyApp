@@ -39,9 +39,11 @@ class AllTasks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tasksList = tasks.where((task) => task.status!=2).toList();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: tasks.isEmpty
+      child: tasksList.isEmpty
           ? const Center(
         child: Icon(
           Icons.pending_actions,
@@ -50,9 +52,9 @@ class AllTasks extends StatelessWidget {
         ),
       )
           : ListView.builder(
-        itemCount: tasks.length,
+        itemCount: tasksList.length,
         itemBuilder: (context, i) {
-          final task = tasks[i];
+          final task = tasksList[i];
           return Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: TaskListTile(
