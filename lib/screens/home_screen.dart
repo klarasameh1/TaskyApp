@@ -18,16 +18,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedItem = 0;
   List<Task> tasks = [];
-  final List<Widget> pages = [];
 
   @override
   void initState() {
     super.initState();
-    pages.addAll([
-      AllTasks(),
-      PendingTasks(tasks: tasks, refresh: loadTasks)
-
-    ]);
     loadTasks();
   }
 
@@ -80,9 +74,17 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 15),
           Expanded(
             child: selectedItem == 0
-                ? AllTasks()
-                : PendingTasks(tasks: tasks, refresh: loadTasks),
-          ),
+                ? AllTasks(
+              tasks: tasks,
+              refresh: loadTasks,
+            )
+                : PendingTasks(
+              tasks: tasks,
+              refresh: loadTasks,
+            ),
+          )
+
+
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

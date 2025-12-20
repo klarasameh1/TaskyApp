@@ -5,30 +5,36 @@ import '../widgets/TaskListTile.dart';
 import '../models/Task.dart';
 import '../database/helper/dp_helper.dart';
 
-class PendingTasks extends StatefulWidget {
+class PendingTasks extends StatelessWidget {
   final List<Task> tasks;
   final VoidCallback refresh;
 
   const PendingTasks({super.key, required this.tasks, required this.refresh});
 
-  @override
-  State<PendingTasks> createState() => _PendingTasksState();
-}
+  Future<void> toggleStatus(Task task) async {
+    await DBHelper.updateTaskStatus(task.id!, !task.status);
+    refresh();
+  }
 
-class _PendingTasksState extends State<PendingTasks> {
+  Future<void> deleteTask(Task task) async {
+    await DBHelper.deleteTask(task.id!);
+    refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final pendingTasks = widget.tasks.where((task) => !task.status).toList();
+    final pendingTasks = tasks.where((task) => !task.status).toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: pendingTasks.isEmpty
           ? const Center(
-          child: Icon(
-            Icons.pending_actions,
-            color: Colors.grey,
-            size: 40,
-          ))
+        child: Icon(
+          Icons.pending_actions,
+          color: Colors.grey,
+          size: 40,
+        ),
+      )
           : ListView.builder(
         itemCount: pendingTasks.length,
         itemBuilder: (context, i) {
@@ -38,23 +44,13 @@ class _PendingTasksState extends State<PendingTasks> {
             child: TaskListTile(
               key: ValueKey(task.id),
               task: task,
-              onToggle: () async {
-                await DBHelper.updateTaskStatus(task.id!, !task.status);
-                widget.refresh();
-              },
-              onEdit: () {
-                showEditDialog(context, task, widget.refresh);
-              },
-              onDelete: () async {
-                await DBHelper.deleteTask(task.id!);
-                widget.refresh();
-              },
-              onExpand: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => expandDialog(context, task),
-                );
-              },
+              onToggle: () => toggleStatus(task),
+              onEdit: () => showEditDialog(context, task, refresh),
+              onDelete: () => deleteTask(task),
+              onExpand: () => showDialog(
+                context: context,
+                builder: (_) => expandDialog(context, task),
+              ),
             ),
           );
         },

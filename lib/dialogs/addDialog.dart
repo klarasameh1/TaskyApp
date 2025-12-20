@@ -11,19 +11,20 @@ void showAddDialog(BuildContext context, VoidCallback refresh) {
         title: "Add Task",
         initialPriority: Colors.white70,
         onSubmit: (name, desc, priority, date) async {
-          final task = Task(
+          final newTask = Task(
             name: name,
             desc: desc.isNotEmpty ? desc : "No description yet",
-            date: date.isNotEmpty ? date : DateTime.now().toString().substring(0,10),
+            date: date.isEmpty ? DateTime.now().toString().substring(0, 10) : date,
             priority: priority,
             status: false,
           );
+          await DBHelper.insertTask(newTask);
 
-          await DBHelper.insertTask(task);
-          refresh();  // refresh task list in UI
-          Navigator.pop(dialogContext); // close dialog
+          refresh(); // refresh task list
+          Navigator.pop(dialogContext);
         },
       );
     },
   );
 }
+
