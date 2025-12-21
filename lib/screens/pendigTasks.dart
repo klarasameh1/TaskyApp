@@ -12,7 +12,7 @@ class PendingTasks extends StatelessWidget {
   const PendingTasks({super.key, required this.tasks, required this.refresh});
 
   Future<void> toggleStatus(Task task) async {
-    await DBHelper.updateTaskStatus(task.id!, task.status);
+    await DBHelper.updateTaskStatus(task.id!, task.status=1);
     refresh();
   }
 
