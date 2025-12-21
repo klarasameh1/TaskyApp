@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
           "TaskyApp",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 26,
+            fontSize: 30,
             color: Colors.white,
           ),
         ),
@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          unselectedItemColor: Colors.white24,
+          unselectedItemColor: Colors.white54,
           selectedItemColor: Colors.white,
           currentIndex: selectedItem,
           onTap: (index) => setState(() => selectedItem = index),
