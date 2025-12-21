@@ -74,12 +74,15 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.white,
           ),
         ),
-        actions: [
+
+        actions: selectedItem == 0
+            ? [
           IconButton(
             onPressed: _clearTasks,
             icon: const Icon(Icons.delete_sweep_outlined, color: Colors.white),
-          ),
-        ],
+          )
+        ]
+            : null,
       ),
       body: Column(
         children: [
@@ -117,13 +120,16 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: selectedItem == 0   // only for AllTasks tab
+          ? FloatingActionButton(
         onPressed: () => showAddDialog(context, _loadTasks),
         shape: const CircleBorder(),
         backgroundColor: Colors.black,
         elevation: 3,
         child: const Icon(Icons.add, size: 40, color: Colors.white),
-      ),
+      )
+          : null,
+
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.black,
