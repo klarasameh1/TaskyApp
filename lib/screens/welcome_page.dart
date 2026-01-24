@@ -34,15 +34,27 @@ class _WelcomePageState extends State<WelcomePage> {
                 children: [
                   const SizedBox(height: 20),
 
-                  Text(
-                    "Tasky App",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40,
-                      letterSpacing: 1.2,
-                    ),
+                  Column(
+                    children: [
+                      Text(
+                        "Tasky",
+                        style: TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.5,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        "Organize your day simply",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
 
                   const SizedBox(height: 30),
@@ -55,19 +67,6 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
 
                   const SizedBox(height: 30),
-
-                  /// Welcome Text
-                  const Text(
-                    "Welcome 👋🏻",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 28,
-                    ),
-                  ),
-
-                  const SizedBox(height: 45),
 
                   /// Input Field
                   TextFormField(
