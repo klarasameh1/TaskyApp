@@ -39,7 +39,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       Text(
                         "Tasky",
                         style: TextStyle(
-                          fontSize: 48,
+                          fontSize: 55,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 1.5,
                           color: Colors.black,
@@ -61,7 +61,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
                   /// Welcome Image
                   Image.asset(
-                    'assets/welcomePhoto.png',
+                    'assets/newLogo.png',
                     width: 250,
                     height: 250,
                   ),
