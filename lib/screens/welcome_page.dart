@@ -58,7 +58,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
                   /// Welcome Text
                   const Text(
-                    "Welcome 👋",
+                    "Welcome 👋🏻",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black87,
@@ -67,7 +67,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     ),
                   ),
 
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 45),
 
                   /// Input Field
                   TextFormField(
@@ -77,8 +77,8 @@ class _WelcomePageState extends State<WelcomePage> {
                       if (value == null || value.trim().isEmpty) {
                         return 'Please enter your name';
                       }
-                      if (value.trim().length < 2) {
-                        return 'Name must be at least 2 characters';
+                      if (value.trim().length < 3) {
+                        return 'Name must be at least 3 characters';
                       }
                       return null;
                     },
@@ -100,7 +100,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     ),
                   ),
 
-                  const SizedBox(height: 35),
+                  const SizedBox(height: 45),
 
                   /// Button
                   SizedBox(
