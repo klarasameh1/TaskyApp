@@ -66,15 +66,26 @@ class _HomeScreenState extends State<HomeScreen> {
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: const Text(
-          "TaskyApp",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-            color: Colors.white,
-          ),
+        title: Column(
+          children: [
+            const Text(
+              "TaskFlow",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              "Organize your day Simply",
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.white70,
+              ),
+            ),
+            SizedBox(height: 10,)
+          ],
         ),
-
         actions: selectedItem == 0
             ? [
           IconButton(
