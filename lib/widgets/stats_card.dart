@@ -39,7 +39,7 @@ class StatsCard extends StatelessWidget {
             Row(
               children: [
                 Icon(
-                  Icons.waving_hand,
+                  Icons.waving_hand_outlined,
                   size: 28,
                   color: Colors.black,
                 ),
@@ -78,7 +78,7 @@ class StatsCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        count > 0 ? "Pending Tasks" : "All Done!",
+                        count > 0 ? "You have" : "All Done!",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
