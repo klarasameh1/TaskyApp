@@ -37,7 +37,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   Column(
                     children: [
                       Text(
-                        "Tasky",
+                        "TaskFlow",
                         style: TextStyle(
                           fontSize: 55,
                           fontWeight: FontWeight.w800,
