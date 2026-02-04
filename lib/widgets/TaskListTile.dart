@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/Task.dart';
 
-class TaskListTile extends StatelessWidget {
+class TaskListTile extends StatefulWidget {
   final Task task;
   final VoidCallback onToggle;
   final VoidCallback onEdit;
@@ -19,7 +19,12 @@ class TaskListTile extends StatelessWidget {
     required this.onArchive,
   });
 
-  bool get isDone => task.status == 1;
+  @override
+  State<TaskListTile> createState() => _TaskListTileState();
+}
+
+class _TaskListTileState extends State<TaskListTile> {
+  bool get isDone => widget.task.status == 1;
 
   /// Centralized title style
   TextStyle get titleStyle => TextStyle(
@@ -38,27 +43,11 @@ class TaskListTile extends StatelessWidget {
     color: isDone ? Colors.grey.shade500 : Colors.black,
   );
 
-  /// Priority → Color mapping (decouples UI from model)
-  Color get cardColor {
-    if (isDone) return Colors.green.shade50;
-
-    switch (task.priority) {
-      case 1:
-        return Colors.red.shade100;
-      case 2:
-        return Colors.orange.shade100;
-      case 3 :
-        return Colors.yellow.shade100;
-      default:
-        return Colors.white;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      color: cardColor,
+      color: isDone ? Colors.green.shade50 : widget.task.priority,
       elevation: 6,
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(
@@ -74,7 +63,7 @@ class TaskListTile extends StatelessWidget {
           child: IconButton(
             key: ValueKey(isDone),
             tooltip: isDone ? 'Mark as incomplete' : 'Mark as completed',
-            onPressed: onToggle,
+            onPressed: widget.onToggle,
             icon:
                 isDone
                     ? const Icon(Icons.check_circle, color: Colors.green)
@@ -85,15 +74,15 @@ class TaskListTile extends StatelessWidget {
           ),
         ),
 
-        title: Text(task.name, style: titleStyle),
+        title: Text(widget.task.name, style: titleStyle),
 
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(task.desc, style: descriptionStyle),
+            Text(widget.task.desc, style: descriptionStyle),
             const SizedBox(height: 4),
             Text(
-              task.date,
+              widget.task.date,
               style: TextStyle(
                 fontSize: 14,
                 color: isDone ? Colors.grey.shade500 : Colors.black54,
@@ -108,23 +97,23 @@ class TaskListTile extends StatelessWidget {
           children: [
             IconButton(
               tooltip: 'Archive task',
-              onPressed: onArchive,
+              onPressed: widget.onArchive,
               icon: const Icon(Icons.archive_outlined, color: Colors.grey),
             ),
             IconButton(
               tooltip: 'Edit task',
-              onPressed: onEdit,
+              onPressed: widget.onEdit,
               icon: const Icon(Icons.edit, color: Colors.grey),
             ),
             IconButton(
               tooltip: 'Delete task',
-              onPressed: onDelete,
+              onPressed: widget.onDelete,
               icon: const Icon(Icons.delete_outline, color: Colors.red),
             ),
           ],
         ),
 
-        onTap: onExpand,
+        onTap: widget.onExpand,
       ),
     );
   }
