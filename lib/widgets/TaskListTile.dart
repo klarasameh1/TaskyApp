@@ -16,7 +16,7 @@ class TaskListTile extends StatefulWidget {
     required this.onEdit,
     required this.onDelete,
     required this.onExpand,
-    required this.onArchive
+    required this.onArchive,
   });
 
   @override
@@ -28,7 +28,10 @@ class _TaskListTileState extends State<TaskListTile> {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      color: widget.task.status == 1 ? Colors.green.shade100 : widget.task.priority,
+      color:
+          widget.task.status == 1
+              ? Colors.green.shade100
+              : widget.task.priority,
       elevation: 6,
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.15,
@@ -42,7 +45,7 @@ class _TaskListTileState extends State<TaskListTile> {
               key: ValueKey(widget.task.status),
               onPressed: widget.onToggle,
               icon:
-                  widget.task.status==1
+                  widget.task.status == 1
                       ? const Icon(Icons.check_circle, color: Colors.green)
                       : const Icon(
                         Icons.radio_button_unchecked,
@@ -56,8 +59,9 @@ class _TaskListTileState extends State<TaskListTile> {
               fontSize: 22,
               fontWeight: FontWeight.bold,
               decoration:
-                  widget.task.status==1 ? TextDecoration.lineThrough : null,
-              color: widget.task.status==1 ? Colors.grey.shade500 : Colors.black,
+                  widget.task.status == 1 ? TextDecoration.lineThrough : null,
+              color:
+                  widget.task.status == 1 ? Colors.grey.shade500 : Colors.black,
               decorationThickness: 2,
             ),
           ),
@@ -69,8 +73,13 @@ class _TaskListTileState extends State<TaskListTile> {
                 style: TextStyle(
                   fontSize: 18,
                   decoration:
-                  widget.task.status==1 ? TextDecoration.lineThrough : null,
-                  color: widget.task.status==1 ? Colors.grey.shade500 : Colors.black,
+                      widget.task.status == 1
+                          ? TextDecoration.lineThrough
+                          : null,
+                  color:
+                      widget.task.status == 1
+                          ? Colors.grey.shade500
+                          : Colors.black,
                   decorationThickness: 1.5,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -80,7 +89,10 @@ class _TaskListTileState extends State<TaskListTile> {
                 widget.task.date,
                 style: TextStyle(
                   fontSize: 14,
-                  color: widget.task.status==1 ? Colors.grey.shade500 : Colors.black54,
+                  color:
+                      widget.task.status == 1
+                          ? Colors.grey.shade500
+                          : Colors.black54,
                 ),
               ),
             ],
@@ -92,23 +104,19 @@ class _TaskListTileState extends State<TaskListTile> {
                 onPressed: widget.onArchive,
                 icon: const Icon(
                   Icons.archive_outlined,
-                  color: Colors.blueGrey,
+                  color: Colors.grey,
                   size: 25,
                 ),
               ),
               IconButton(
                 onPressed: widget.onEdit,
-                icon: const Icon(
-                  Icons.edit,
-                  color: Color(0xff3b3b3b),
-                  size: 25,
-                ),
+                icon: const Icon(Icons.edit, color: Colors.grey, size: 25),
               ),
               IconButton(
                 onPressed: widget.onDelete,
                 icon: const Icon(
                   Icons.delete_outline,
-                  color: Colors.redAccent,
+                  color: Colors.red,
                   size: 25,
                 ),
               ),
