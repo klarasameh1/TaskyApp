@@ -149,9 +149,8 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: selectedItem == 0   // only for AllTasks tab
           ? FloatingActionButton(
         onPressed: () => showAddDialog(context, _loadTasks),
-        shape: const CircleBorder(),
         backgroundColor: Colors.black,
-        elevation: 3,
+        elevation: 8,
         child: const Icon(Icons.add, size: 40, color: Colors.white),
       )
           : null,
