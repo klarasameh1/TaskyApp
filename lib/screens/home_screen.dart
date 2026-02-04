@@ -67,25 +67,28 @@ class _HomeScreenState extends State<HomeScreen> {
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
         title: Column(
-          children: [
-            const Text(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Text(
               "TaskFlow",
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.5,
+                color: Colors.white
               ),
             ),
+            SizedBox(height: 2),
             Text(
-              "Organize your day Simply",
-              style: const TextStyle(
-                fontSize: 14,
+              "Organize your day simply",
+              style: TextStyle(
+                fontSize: 12,
                 color: Colors.white70,
               ),
             ),
-            SizedBox(height: 10,)
           ],
         ),
+
         actions: selectedItem == 0
             ? [
           IconButton(
