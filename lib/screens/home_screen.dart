@@ -90,10 +90,22 @@ class _HomeScreenState extends State<HomeScreen> {
             ? [
           IconButton(
             onPressed: _clearTasks,
-            icon: const Icon(Icons.delete_sweep_outlined, color: Colors.white),
+            icon: const Icon(Icons.delete, color: Colors.white),
           )
         ]
             : null,
+
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu , color: Colors.white,),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+
       ),
       body: Column(
         children: [
@@ -140,6 +152,33 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.add, size: 40, color: Colors.white),
       )
           : null,
+
+      drawer: Drawer(
+        width: MediaQuery.of(context).size.width*0.6,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.black),
+              child: Text("Menu", style: TextStyle(color: Colors.white, fontSize: 24)),
+            ),
+            ListTile(
+              title: const Text('LogOut'),
+              trailing: Icon(Icons.logout, size: 25),
+              onTap: () {
+
+              },
+            ),
+            ListTile(
+              title: const Text('Item 2'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
+      ),
 
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
