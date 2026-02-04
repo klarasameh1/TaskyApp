@@ -7,7 +7,6 @@ class TaskListTile extends StatefulWidget {
   final VoidCallback onEdit;
   final VoidCallback onDelete;
   final VoidCallback onExpand;
-  final VoidCallback onArchive;
 
   const TaskListTile({
     super.key,
@@ -16,7 +15,6 @@ class TaskListTile extends StatefulWidget {
     required this.onEdit,
     required this.onDelete,
     required this.onExpand,
-    required this.onArchive,
   });
 
   @override
@@ -95,11 +93,6 @@ class _TaskListTileState extends State<TaskListTile> {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            IconButton(
-              tooltip: 'Archive task',
-              onPressed: widget.onArchive,
-              icon: const Icon(Icons.archive_outlined, color: Colors.grey),
-            ),
             IconButton(
               tooltip: 'Edit task',
               onPressed: widget.onEdit,

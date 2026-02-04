@@ -75,7 +75,6 @@ class AllTasks extends StatelessWidget {
               task: task,
               onToggle: () => toggleStatus(task),
               onEdit: () => showEditDialog(context, task, refresh),
-              onArchive: () => archiveTask(task),
               onDelete: () => deleteTask(task),
               onExpand: () => showDialog(
                 context: context,

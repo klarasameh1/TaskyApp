@@ -52,7 +52,6 @@ class PendingTasks extends StatelessWidget {
               onToggle: () => toggleStatus(task),
               onEdit: () => showEditDialog(context, task, refresh),
               onDelete: () => deleteTask(task),
-              onArchive: () => archiveTask(task),
               onExpand: () => showDialog(
                 context: context,
                 builder: (_) => expandDialog(context, task),

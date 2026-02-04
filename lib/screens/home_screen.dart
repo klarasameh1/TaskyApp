@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../dialogs/addDialog.dart';
 import '../widgets/stats_card.dart';
 import 'allTasks.dart';
-import 'archivedTasks.dart';
 import 'pendigTasks.dart';
 import '../database/helper/dp_helper.dart';
 import '../models/Task.dart';
@@ -132,11 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       tasks: tasks,
                       refresh: _loadTasks,
                     );
-                  case 2:
-                    return ArchivedTasks(
-                      tasks: tasks,
-                      refresh: _loadTasks,
-                    );
                   default:
                     return const SizedBox();
                 }
@@ -201,10 +195,6 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               label: "Pending Tasks",
               icon: Icon(Icons.pending_actions_outlined),
-            ),
-            BottomNavigationBarItem(
-              label: "Archived",
-              icon: Icon(Icons.archive_outlined),
             ),
           ],
         ),
