@@ -30,10 +30,10 @@ class _TaskDialogState extends State<TaskDialog> {
 
   // Priority colors
   final List<Color> priorityColors = [
-    Colors.red.shade200,
-    Colors.orange.shade200,
-    Colors.yellow.shade200,
-    const Color(0xB3FFFFFF),
+    Colors.red.shade100,
+    Colors.orange.shade100,
+    Colors.yellow.shade100,
+    const Color(0xFFFFFFFF),
   ];
 
   @override
@@ -65,7 +65,7 @@ class _TaskDialogState extends State<TaskDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -88,7 +88,7 @@ class _TaskDialogState extends State<TaskDialog> {
             Row(
               children: [
                 const Text(
-                  "Priority: ",
+                  "Color: ",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 // Color buttons
