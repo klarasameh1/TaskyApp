@@ -45,10 +45,23 @@ class AllTasks extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: tasksList.isEmpty
           ? const Center(
-        child: Icon(
-          Icons.pending_actions,
-          color: Colors.grey,
-          size: 40,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.pending_actions,
+              color: Colors.grey,
+              size: 40,
+            ),
+            SizedBox(height: 10,),
+            Text(
+              'Tap + to add your first task',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey
+              ),
+            )
+          ],
         ),
       )
           : ListView.builder(
