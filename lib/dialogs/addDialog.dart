@@ -8,7 +8,7 @@ void showAddDialog(BuildContext context, VoidCallback refresh) {
     context: context,
     builder: (context) => TaskDialog(
       title: "Add Task",
-      initialPriority: const Color(0xB3FFFFFF),
+      initialPriority: const Color(0xFFFFFFFF),
       onSubmit: (name, desc, priority, date) async {
         final newTask = Task(
           name: name,
