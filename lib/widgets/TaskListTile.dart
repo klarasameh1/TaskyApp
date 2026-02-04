@@ -30,7 +30,7 @@ class _TaskListTileState extends State<TaskListTile> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       color:
           widget.task.status == 1
-              ? Colors.green.shade100
+              ? Colors.green.shade50
               : widget.task.priority,
       elevation: 6,
       child: SizedBox(
