@@ -12,7 +12,7 @@ void showAddDialog(BuildContext context, VoidCallback refresh) {
       onSubmit: (name, desc, priority, date) async {
         final newTask = Task(
           name: name,
-          desc: desc.isNotEmpty ? desc : "No description yet",
+          desc: desc.isNotEmpty ? desc : "",
           date: date.isNotEmpty ? date : DateTime.now().toString().substring(0, 10),
           priority: priority,
           status: 0,
