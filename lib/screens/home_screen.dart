@@ -139,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: selectedItem == 0   // only for AllTasks tab
           ? FloatingActionButton(
         onPressed: () => showAddDialog(context, _loadTasks),
