@@ -65,7 +65,7 @@ class _TaskDialogState extends State<TaskDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.grey[300],
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
