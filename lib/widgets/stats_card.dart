@@ -16,20 +16,17 @@ class StatsCard extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.85,
       height: 150,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
         color: Colors.white,
-        border: Border.all(
-          color: Colors.black,
-          width: 2,
-        ),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 15,
+            offset: Offset(0, 6),
           ),
         ],
       ),
+
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
