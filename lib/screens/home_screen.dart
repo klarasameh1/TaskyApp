@@ -1,3 +1,4 @@
+import 'package:first_app/widgets/appBar.dart';
 import 'package:flutter/material.dart';
 import '../dialogs/addDialog.dart';
 import '../widgets/stats_card.dart';
@@ -60,63 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
-        centerTitle: true,
-        title: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            Text(
-              "TaskFlow",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.5,
-                color: Colors.white
-              ),
-            ),
-            SizedBox(height: 2),
-            Text(
-              "Organize your day simply",
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.white70,
-              ),
-            ),
-          ],
-        ),
 
-        actions: selectedItem == 0
-            ? [
-          IconButton(
-            onPressed: _clearTasks,
-            icon: const Icon(Icons.delete, color: Colors.white),
-          )
-        ]
-            : null,
-
-        leading: Builder(
-          builder: (context) {
-            return IconButton(
-              icon: const Icon(Icons.menu , color: Colors.white,),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
-
-      ),
       body: Column(
         children: [
-          const SizedBox(height: 10),
-          StatsCard(
-            name: widget.userName,
-            count: tasks.where((task) => task.status==0).length,
-          ),
-          const SizedBox(height: 15),
+          CustomAppBar(userName: widget.userName, count:tasks.where((task) => task.status==0).length,),
           Expanded(
             child: Builder(
               builder: (_) {
@@ -149,27 +97,43 @@ class _HomeScreenState extends State<HomeScreen> {
       )
           : null,
 
-      drawer: Drawer(
+      endDrawer: Drawer(
         width: MediaQuery.of(context).size.width*0.6,
+        backgroundColor: Colors.black,
         child: ListView(
-          padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.black),
-              child: Text("Menu", style: TextStyle(color: Colors.white, fontSize: 24)),
+            DrawerHeader(
+                child: Center(
+                  child: Text(
+                      'TaskFlow',
+                    style: TextStyle(
+                      color: Colors.white60,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
             ),
             ListTile(
-              title: const Text('LogOut'),
-              trailing: Icon(Icons.logout, size: 25),
+              title: const Text('Clear All' ,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18
+                ),
+              ),
+              trailing: Icon(Icons.delete_sweep_outlined, size: 25 , color: Colors.white,),
               onTap: () {
-
               },
             ),
             ListTile(
-              title: const Text('Item 2'),
+              title: const Text('Clear Finished ' ,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18
+                ),
+              ),
+              trailing: Icon(Icons.cleaning_services_outlined, size: 25 , color: Colors.white,),
               onTap: () {
-                // Update the state of the app.
-                // ...
               },
             ),
           ],
