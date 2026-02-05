@@ -17,18 +17,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int selectedItem = 0; //index for the bottom navbar
-  List<Task> tasks = [];
+  int selectedItem = 0; // index for the bottom navbar
+  List<MapEntry<dynamic, Task>> tasks = []; // Hive key + Task
 
   @override
   void initState() {
     super.initState();
-    _loadTasks(); //load tasks when screen is opened
+    _loadTasks(); // load tasks when screen is opened
   }
 
   Future<void> _loadTasks() async {
-      final loaded = await DBHelper.getTasks(); //fetch from sqlite
-      setState(() => tasks = loaded);
+    final loaded = await DBHelper.getTasks(); // should return List<MapEntry<dynamic, Task>>
+    setState(() => tasks = loaded);
   }
 
   Future<void> _clearTasks() async {
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text("Clear", style: TextStyle(color: Colors.red , fontWeight: FontWeight.bold)),
+            child: const Text("Clear", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -56,14 +56,13 @@ class _HomeScreenState extends State<HomeScreen> {
       await _loadTasks();
     }
   }
+
   Future<void> _clearFinishedTasks() async {
     final confirmed = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("Clear Finished Tasks"),
-        content: const Text(
-          "Are you sure you want to delete all finished tasks?",
-        ),
+        content: const Text("Are you sure you want to delete all finished tasks?"),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -71,40 +70,42 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text("Clear", style: TextStyle(color: Colors.red , fontWeight: FontWeight.bold)),
+            child: const Text("Clear", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
     );
 
     if (confirmed == true) {
-      await DBHelper.clearFinishedTasks(); // 👈 important
+      await DBHelper.clearFinishedTasks();
       await _loadTasks();
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
+    // number of pending tasks
+    final pendingCount = tasks.where((entry) => entry.value.status == 0).length;
+
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
 
       body: Column(
         children: [
-          CustomAppBar(userName: widget.userName, count:tasks.where((task) => task.status==0).length,),
+          CustomAppBar(userName: widget.userName, count: pendingCount),
           Expanded(
             child: Builder(
               builder: (_) {
                 switch (selectedItem) {
                   case 0:
                     return AllTasks(
-                      tasks: tasks,
+                      tasksWithKeys: tasks,
                       refresh: _loadTasks,
                     );
                   case 1:
                     return PendingTasks(
-                      tasks: tasks,
+                      tasksWithKeys: tasks,
                       refresh: _loadTasks,
                     );
                   default:
@@ -112,11 +113,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
             ),
-          )
+          ),
         ],
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: selectedItem == 0   // only for AllTasks tab
+      floatingActionButton: selectedItem == 0
           ? FloatingActionButton(
         onPressed: () => showAddDialog(context, _loadTasks),
         backgroundColor: Colors.black,
@@ -132,12 +134,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 🔹 Header
+              // Header
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 24,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                 child: Text(
                   'TaskFlow',
                   style: TextStyle(
@@ -151,42 +150,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
               const Divider(color: Colors.black),
 
-              // 🔹 Menu Items
+              // Menu Items
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: [
                     ListTile(
-                      leading: const Icon(
-                        Icons.delete_sweep_outlined,
-                        color: Colors.black,
-                      ),
+                      leading: const Icon(Icons.delete_sweep_outlined, color: Colors.black),
                       title: const Text(
                         'Clear All Tasks',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
+                        style: TextStyle(color: Colors.black, fontSize: 16),
                       ),
-                      onTap: tasks.isEmpty ? null : () {
+                      onTap: tasks.isEmpty
+                          ? null
+                          : () {
                         Navigator.pop(context);
                         _clearTasks();
                       },
                     ),
-
                     ListTile(
-                      leading: const Icon(
-                        Icons.cleaning_services_outlined,
-                        color: Colors.black,
-                      ),
+                      leading: const Icon(Icons.cleaning_services_outlined, color: Colors.black),
                       title: const Text(
                         'Clear Finished Tasks',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
+                        style: TextStyle(color: Colors.black, fontSize: 16),
                       ),
-                      onTap: tasks.any((t) => t.status == 1)
+                      onTap: tasks.any((entry) => entry.value.status == 1)
                           ? () {
                         Navigator.pop(context);
                         _clearFinishedTasks();
@@ -204,10 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Center(
                   child: Text(
                     'v1.0.0 | Klara Sameh',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: Colors.black, fontSize: 12),
                   ),
                 ),
               ),
@@ -216,11 +201,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
 
-
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Colors.black,
-        ),
+        decoration: const BoxDecoration(color: Colors.black),
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
           elevation: 0,

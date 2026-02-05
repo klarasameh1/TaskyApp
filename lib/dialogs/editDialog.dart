@@ -3,7 +3,7 @@ import '../models/Task.dart';
 import '../database/helper/dp_helper.dart';
 import 'TaskDialog.dart';
 
-void showEditDialog(BuildContext context, Task task, VoidCallback refresh) {
+void showEditDialog(BuildContext context, dynamic key, Task task, VoidCallback refresh) {
   showDialog(
     context: context,
     builder: (_) => TaskDialog(
@@ -14,7 +14,6 @@ void showEditDialog(BuildContext context, Task task, VoidCallback refresh) {
       date: task.date,
       onSubmit: (name, desc, priority, date) async {
         final updatedTask = Task(
-          id: task.id,
           name: name,
           desc: desc.isNotEmpty ? desc : "",
           priority: priority,
@@ -22,7 +21,7 @@ void showEditDialog(BuildContext context, Task task, VoidCallback refresh) {
           status: task.status,
         );
 
-        await DBHelper.updateTask(updatedTask); // update DB
+        await DBHelper.updateTask(key, updatedTask); // ✅ pass Hive key
         refresh(); // refresh task list in UI
       },
     ),

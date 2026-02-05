@@ -1,113 +1,85 @@
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
+import 'package:hive/hive.dart';
 import '../../models/Task.dart';
 
-/// Database helper class for managing tasks CRUD operations
+/// Hive-based Database helper class for tasks (no manual id)
 class DBHelper {
-  static Database? _db; //Singleton instance of the database
+  static const String _boxName = 'tasks';
+  static Box? _box;
 
-  //getter for the db
-  static Future<Database> get database async {
-    if (_db != null) return _db!;
-    _db = await _initDB();
-    return _db!;
-  }
-
-  /// Initializes the DB by:
-  // 1. Getting path to databases folder
-  // 2. Joining database name
-  // 3. Opening/creating the DB with onCreate callback
-  static Future<Database> _initDB() async {
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, "tasks.db");
-
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, version) async {
-        // Create table schema on first creation
-        await db.execute('''
-          CREATE TABLE tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
-            desc TEXT,
-            date TEXT,
-            priority INTEGER,
-            status INTEGER
-          )
-        ''');
-      },
-    );
-  }
-
-  // Insert task
-  static Future<int> insertTask(Task task) async {
-    final db = await database;
-    return await db.insert("tasks", task.toMap());
-  }
-
-  // Get tasks
-  static Future<List<Task>> getTasks({int? status}) async {
-    final db = await database;
-
-    List<Map<String, dynamic>> res;
-
-    if (status == null) {
-      res = await db.query('tasks', orderBy: 'id DESC');
+  /// Initialize Hive box
+  static Future<void> init() async {
+    if (!Hive.isBoxOpen(_boxName)) {
+      _box = await Hive.openBox(_boxName);
     } else {
-      res = await db.query(
-        'tasks',
-        where: 'status = ?',
-        whereArgs: [status],
-        orderBy: 'id DESC',
-      );
+      _box = Hive.box(_boxName);
+    }
+  }
+
+  static Box get _db {
+    if (_box == null) {
+      throw Exception('Hive box not initialized. Call DBHelper.init() first.');
+    }
+    return _box!;
+  }
+
+  /// Insert task
+  static Future<int> insertTask(Task task) async {
+    // Returns the auto-generated Hive key
+    return await _db.add(task.toMap());
+  }
+
+  /// Get all tasks or filter by status
+  /// Get all tasks or by status
+  static Future<List<MapEntry<dynamic, Task>>> getTasks({int? status}) async {
+    final box = _db;
+    final allEntries = box.toMap().entries // returns Map<dynamic, dynamic>
+        .map((entry) => MapEntry(entry.key, Task.fromMap(Map<String, dynamic>.from(entry.value))))
+        .toList();
+
+    if (status != null) {
+      return allEntries.where((entry) => entry.value.status == status).toList();
     }
 
-    // Convert db rows to Task objects
-    return res.map((e) => Task.fromMap(e)).toList();
+    return allEntries;
   }
 
-  // Update task
-  static Future<int> updateTask(Task task) async {
-    final db = await database;
-    return db.update(
-        "tasks",
-        task.toMap(),
-        where: "id = ?",
-        whereArgs: [task.id]
-    );
+
+  /// Update task by Hive index
+  static Future<void> updateTask(int index, Task task) async {
+    await _db.putAt(index, task.toMap());
   }
 
-  // Update task status
-  static Future<int> updateTaskStatus(int id, int status) async {
-    final db = await database;
-    return db.update(
-      "tasks",
-      {"status": status },
-      where: "id = ?",
-      whereArgs: [id],
-    );
+  /// Update task status only by Hive index
+  static Future<void> updateTaskStatus(int index, int status) async {
+    final taskMap = Map<String, dynamic>.from(_db.getAt(index));
+    taskMap['status'] = status;
+    await _db.putAt(index, taskMap);
   }
 
-  // Delete task
-  static Future<int> deleteTask(int id) async {
-    final db = await database;
-    return db.delete("tasks", where: "id = ?", whereArgs: [id]);
+  /// Delete task by Hive index
+  static Future<void> deleteTask(int index) async {
+    await _db.deleteAt(index);
   }
 
-  // Clear all tasks
+  /// Clear all tasks
   static Future<void> clearTasks() async {
-    final db = await database;
-    await db.delete("tasks");
+    await _db.clear();
   }
 
-  //clear finished tasks
+  /// Clear finished tasks
   static Future<void> clearFinishedTasks() async {
-    final db = await database;
-    await db.delete(
-      'tasks',
-      where: 'status = ?',
-      whereArgs: [1],
-    );
+    final keysToDelete = <int>[];
+
+    for (int i = 0; i < _db.length; i++) {
+      final task = Task.fromMap(Map<String, dynamic>.from(_db.getAt(i)));
+      if (task.status == 1) {
+        keysToDelete.add(i);
+      }
+    }
+
+    // Delete in reverse to avoid index shifting
+    for (var i in keysToDelete.reversed) {
+      await _db.deleteAt(i);
+    }
   }
 }

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import '../dialogs/editDialog.dart';
-import '../dialogs/expandDialog.dart';
-import '../widgets/TaskListTile.dart';
 import '../models/Task.dart';
 import '../database/helper/dp_helper.dart';
 
 class Expandtask extends StatelessWidget {
+  final dynamic keyId; // Hive key for this task
+  final Task task;
 
-  final Task task ;
-  const Expandtask({super.key , required this.task});
+  const Expandtask({super.key, required this.keyId, required this.task});
 
-
-  Future<void> deleteTask(Task task) async {
-    await DBHelper.deleteTask(task.id!);
+  Future<void> deleteTask() async {
+    await DBHelper.deleteTask(keyId);
   }
 
   @override
@@ -26,7 +23,6 @@ class Expandtask extends StatelessWidget {
           color: Colors.white, // makes the back arrow white
         ),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -45,9 +41,7 @@ class Expandtask extends StatelessWidget {
 
             // 🔹 Description
             Text(
-              task.desc.isEmpty
-                  ? 'No description provided.'
-                  : task.desc,
+              task.desc.isEmpty ? 'No description provided.' : task.desc,
               style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black87,
@@ -56,18 +50,18 @@ class Expandtask extends StatelessWidget {
 
             const Spacer(),
 
-// 🔴 Delete Button
+            // 🔴 Delete Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black, // changed from red to black
+                  backgroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                icon: const Icon(Icons.delete, color: Colors.white), // ensure icon is visible
+                icon: const Icon(Icons.delete, color: Colors.white),
                 label: const Text(
                   'Delete Task',
-                  style: TextStyle(color: Colors.white), // ensure text is visible
+                  style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
                   final confirmed = await showDialog(
@@ -75,36 +69,27 @@ class Expandtask extends StatelessWidget {
                     builder: (context) => AlertDialog(
                       backgroundColor: Colors.white,
                       title: const Text('Delete Task'),
-                      content: const Text(
-                        'Are you sure you want to delete this task?',
-                      ),
+                      content: const Text('Are you sure you want to delete this task?'),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(context, false),
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(color: Colors.black),
-                          ),
+                          child: const Text('Cancel', style: TextStyle(color: Colors.black)),
                         ),
                         TextButton(
                           onPressed: () => Navigator.pop(context, true),
-                          child: const Text(
-                            'Delete',
-                            style: TextStyle(color: Colors.red),
-                          ),
+                          child: const Text('Delete', style: TextStyle(color: Colors.red)),
                         ),
                       ],
                     ),
                   );
 
                   if (confirmed == true) {
-                    await DBHelper.deleteTask(task.id!);
+                    await deleteTask();
                     Navigator.pop(context, true); // return success
                   }
                 },
               ),
             ),
-
           ],
         ),
       ),

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Task {
-  int? id;
   String name;
   String desc;
   String date;
   Color priority;
-  int status; // 0 pending - 1 done - 2 archive
+  int status; // 0 = pending, 1 = done, 2 = archived
 
   Task({
-    this.id,
     required this.name,
     required this.desc,
     required this.date,
@@ -17,10 +15,10 @@ class Task {
     this.status = 0,
   });
 
+  /// Convert from Map (Hive or JSON)
   factory Task.fromMap(Map<String, dynamic> map) {
-    // Handle priority conversion safely
-    Color priorityColor = Colors.white70; // Default
-
+    // Safely convert priority
+    Color priorityColor = Colors.white70; // default
     if (map['priority'] != null) {
       try {
         final priorityValue = map['priority'];
@@ -33,21 +31,20 @@ class Task {
     }
 
     return Task(
-      id: map['id'],
       name: map['name'] ?? '',
       desc: map['desc'] ?? '',
       date: map['date'] ?? DateTime.now().toString().substring(0, 10),
       priority: priorityColor,
-      status: map['status'] ,
+      status: map['status'] ?? 0,
     );
   }
 
+  /// Convert to Map (Hive storage)
   Map<String, dynamic> toMap() => {
-    'id': id,
     'name': name,
     'desc': desc,
     'date': date,
     'priority': priority.value,
-    'status': status ,
+    'status': status,
   };
 }

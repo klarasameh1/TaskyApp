@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import '../dialogs/editDialog.dart';
-import '../dialogs/expandDialog.dart';
 import '../widgets/TaskListTile.dart';
 import '../models/Task.dart';
 import '../database/helper/dp_helper.dart';
 import 'expandTask.dart';
 
 class AllTasks extends StatelessWidget {
-  final List<Task> tasks;
+  final List<MapEntry<dynamic, Task>> tasksWithKeys; // Hive key + Task
   final VoidCallback refresh;
 
-  const AllTasks({super.key, required this.tasks, required this.refresh});
+  const AllTasks({super.key, required this.tasksWithKeys, required this.refresh});
 
-  Future<void> toggleStatus(Task task) async {
+  Future<void> toggleStatus(dynamic key, Task task) async {
     int newStatus;
 
     if (task.status == 0) {
@@ -23,24 +22,24 @@ class AllTasks extends StatelessWidget {
       newStatus = task.status; // archived stays archived
     }
 
-    await DBHelper.updateTaskStatus(task.id!, newStatus);
-    refresh(); //reload ALL tasks from database
+    await DBHelper.updateTaskStatus(key, newStatus);
+    refresh(); // reload tasks from database
   }
 
-  Future<void> archiveTask(Task task) async {
-    await DBHelper.updateTaskStatus(task.id!, 2);
+  Future<void> archiveTask(dynamic key) async {
+    await DBHelper.updateTaskStatus(key, 2);
     refresh();
   }
 
-
-  Future<void> deleteTask(Task task) async {
-    await DBHelper.deleteTask(task.id!);
-    refresh(); //reload ALL tasks from database
+  Future<void> deleteTask(dynamic key) async {
+    await DBHelper.deleteTask(key);
+    refresh();
   }
 
   @override
   Widget build(BuildContext context) {
-    final tasksList = tasks.where((task) => task.status!=2).toList();
+    // Only show non-archived tasks
+    final tasksList = tasksWithKeys.where((entry) => entry.value.status != 2).toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -54,13 +53,10 @@ class AllTasks extends StatelessWidget {
               color: Colors.grey,
               size: 40,
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 10),
             Text(
               'Tap + to add your first task',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.grey),
             )
           ],
         ),
@@ -68,20 +64,26 @@ class AllTasks extends StatelessWidget {
           : ListView.builder(
         itemCount: tasksList.length,
         itemBuilder: (context, i) {
-          final task = tasksList[i];
+          final entry = tasksList[i];
+          final key = entry.key;
+          final task = entry.value;
+
           return Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: TaskListTile(
-              key: ValueKey(task.id),
+              key: ValueKey(key), // Hive key as unique identifier
               task: task,
-              onToggle: () => toggleStatus(task),
-              onEdit: () => showEditDialog(context, task, refresh),
-              onDelete: () => deleteTask(task),
+              onToggle: () => toggleStatus(key, task),
+              onEdit: () => showEditDialog(context, key, task, refresh), // ✅ pass key
+              onDelete: () => deleteTask(key),
               onExpand: () async {
                 final deleted = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => Expandtask(task: task),
+                    builder: (_) => Expandtask(
+                      keyId: key, // ✅ pass Hive key
+                      task: task,
+                    ),
                   ),
                 );
 

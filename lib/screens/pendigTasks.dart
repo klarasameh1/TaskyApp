@@ -6,29 +6,29 @@ import '../models/Task.dart';
 import '../database/helper/dp_helper.dart';
 
 class PendingTasks extends StatelessWidget {
-  final List<Task> tasks;
+  final List<MapEntry<dynamic, Task>> tasksWithKeys; // Hive key + Task
   final VoidCallback refresh;
 
-  const PendingTasks({super.key, required this.tasks, required this.refresh});
+  const PendingTasks({super.key, required this.tasksWithKeys, required this.refresh});
 
-  Future<void> toggleStatus(Task task) async {
-    await DBHelper.updateTaskStatus(task.id!, task.status=1);
+  Future<void> toggleStatus(dynamic key, Task task) async {
+    await DBHelper.updateTaskStatus(key, 1); // mark as done
     refresh();
   }
 
-  Future<void> archiveTask(Task task) async {
-    await DBHelper.updateTaskStatus(task.id!, 2);
+  Future<void> archiveTask(dynamic key) async {
+    await DBHelper.updateTaskStatus(key, 2); // mark as archived
     refresh();
   }
 
-  Future<void> deleteTask(Task task) async {
-    await DBHelper.deleteTask(task.id!);
+  Future<void> deleteTask(dynamic key) async {
+    await DBHelper.deleteTask(key);
     refresh();
   }
 
   @override
   Widget build(BuildContext context) {
-    final pendingTasks = tasks.where((task) => task.status==0).toList();
+    final pendingTasks = tasksWithKeys.where((entry) => entry.value.status == 0).toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -42,29 +42,29 @@ class PendingTasks extends StatelessWidget {
               color: Colors.grey,
               size: 40,
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 10),
             Text(
               'Tap + to add your first task',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey
-              ),
-            )
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
           ],
         ),
       )
           : ListView.builder(
         itemCount: pendingTasks.length,
         itemBuilder: (context, i) {
-          final task = pendingTasks[i];
+          final entry = pendingTasks[i];
+          final key = entry.key;
+          final task = entry.value;
+
           return Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: TaskListTile(
-              key: ValueKey(task.id),
+              key: ValueKey(key), // use Hive key
               task: task,
-              onToggle: () => toggleStatus(task),
-              onEdit: () => showEditDialog(context, task, refresh),
-              onDelete: () => deleteTask(task),
+              onToggle: () => toggleStatus(key, task),
+              onEdit: () => showEditDialog(context, key, task, refresh), // ✅ pass key
+              onDelete: () => deleteTask(key),
               onExpand: () => showDialog(
                 context: context,
                 builder: (_) => expandDialog(context, task),
