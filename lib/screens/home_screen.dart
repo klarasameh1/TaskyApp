@@ -190,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       onTap: () {
                         Navigator.pop(context);
-                        // TODO: clear finished tasks
+                        _clearFinishedTasks();
                       },
                     ),
                   ],

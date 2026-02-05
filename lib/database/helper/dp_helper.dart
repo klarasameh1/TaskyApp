@@ -100,4 +100,14 @@ class DBHelper {
     final db = await database;
     await db.delete("tasks");
   }
+
+  //clear finished tasks
+  static Future<void> clearFinishedTasks() async {
+    final db = await database;
+    await db.delete(
+      'tasks',
+      where: 'status = ?',
+      whereArgs: [1],
+    );
+  }
 }
