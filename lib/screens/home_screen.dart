@@ -55,6 +55,36 @@ class _HomeScreenState extends State<HomeScreen> {
       await _loadTasks();
     }
   }
+  Future<void> _clearFinishedTasks() async {
+    final confirmed = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Clear Finished Tasks"),
+        content: const Text(
+          "Are you sure you want to delete all finished tasks?",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text(
+              "Clear",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await DBHelper.clearFinishedTasks(); // 👈 important
+      await _loadTasks();
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -98,47 +128,93 @@ class _HomeScreenState extends State<HomeScreen> {
           : null,
 
       endDrawer: Drawer(
-        width: MediaQuery.of(context).size.width*0.6,
+        width: MediaQuery.of(context).size.width * 0.6,
         backgroundColor: Colors.black,
-        child: ListView(
-          children: [
-            DrawerHeader(
-                child: Center(
-                  child: Text(
-                      'TaskFlow',
-                    style: TextStyle(
-                      color: Colors.white60,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 🔹 Header
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 24,
+                ),
+                child: Text(
+                  'TaskFlow',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
                   ),
-                )
-            ),
-            ListTile(
-              title: const Text('Clear All' ,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18
                 ),
               ),
-              trailing: Icon(Icons.delete_sweep_outlined, size: 25 , color: Colors.white,),
-              onTap: () {
-              },
-            ),
-            ListTile(
-              title: const Text('Clear Finished ' ,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18
+
+              const Divider(color: Colors.white24),
+
+              // 🔹 Menu Items
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    ListTile(
+                      leading: const Icon(
+                        Icons.delete_sweep_outlined,
+                        color: Colors.white,
+                      ),
+                      title: const Text(
+                        'Clear All Tasks',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        _clearTasks();
+                      },
+                    ),
+
+                    ListTile(
+                      leading: const Icon(
+                        Icons.cleaning_services_outlined,
+                        color: Colors.white,
+                      ),
+                      title: const Text(
+                        'Clear Finished Tasks',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        // TODO: clear finished tasks
+                      },
+                    ),
+                  ],
                 ),
               ),
-              trailing: Icon(Icons.cleaning_services_outlined, size: 25 , color: Colors.white,),
-              onTap: () {
-              },
-            ),
-          ],
+
+              const Divider(color: Colors.white24),
+
+              // 🔹 Footer (optional)
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  'v1.0.0 | Klara Sameh',
+                  style: TextStyle(
+                    color: Colors.white38,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+
 
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
