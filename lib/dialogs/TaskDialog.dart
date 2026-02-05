@@ -81,71 +81,76 @@ class _TaskDialogState extends State<TaskDialog> {
       ),
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(height: 10),
-            Row(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  "Color: ",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    const Text(
+                      "Color: ",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    // Color buttons
+                    ...priorityColors.map((color) => _buildColorButton(color)),
+                  ],
                 ),
-                // Color buttons
-                ...priorityColors.map((color) => _buildColorButton(color)),
-              ],
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(
-                hintText: "Title",
-                filled: true,
-                fillColor: Colors.grey[100],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: descController,
-              maxLines: 3,
-              minLines: 2,
-              expands: false,
-              textInputAction: TextInputAction.newline,
-              decoration: InputDecoration(
-                hintText: "Description",
-                filled: true,
-                fillColor: Colors.grey[100],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 14),
-            GestureDetector(
-              onTap: pickDate,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.calendar_today,
-                      size: 20, color: Colors.black87),
-                  const SizedBox(width: 10),
-                  Text(
-                    selectedDate,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black87,
+                SizedBox(height: 10),
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    hintText: "Title",
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none,
                     ),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: descController,
+                  maxLines: 3,
+                  minLines: 2,
+                  expands: false,
+                  textInputAction: TextInputAction.newline,
+                  decoration: InputDecoration(
+                    hintText: "Description",
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                GestureDetector(
+                  onTap: pickDate,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.calendar_today,
+                          size: 20, color: Colors.black87),
+                      const SizedBox(width: 10),
+                      Text(
+                        selectedDate,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
-            const SizedBox(height: 20),
-          ],
+          ),
         ),
       ),
       actions: [
