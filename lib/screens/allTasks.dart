@@ -4,6 +4,7 @@ import '../dialogs/expandDialog.dart';
 import '../widgets/TaskListTile.dart';
 import '../models/Task.dart';
 import '../database/helper/dp_helper.dart';
+import 'expandTask.dart';
 
 class AllTasks extends StatelessWidget {
   final List<Task> tasks;
@@ -76,10 +77,18 @@ class AllTasks extends StatelessWidget {
               onToggle: () => toggleStatus(task),
               onEdit: () => showEditDialog(context, task, refresh),
               onDelete: () => deleteTask(task),
-              onExpand: () => showDialog(
-                context: context,
-                builder: (_) => expandDialog(context, task),
-              ),
+              onExpand: () async {
+                final deleted = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => Expandtask(task: task),
+                  ),
+                );
+
+                if (deleted == true) {
+                  refresh(); // reload tasks
+                }
+              },
             ),
           );
         },
