@@ -16,7 +16,7 @@ void showEditDialog(BuildContext context, Task task, VoidCallback refresh) {
         final updatedTask = Task(
           id: task.id,
           name: name,
-          desc: desc.isNotEmpty ? desc : "No description yet",
+          desc: desc.isNotEmpty ? desc : "",
           priority: priority,
           date: date.isNotEmpty ? date : task.date,
           status: task.status,
