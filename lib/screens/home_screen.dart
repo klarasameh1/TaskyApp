@@ -35,16 +35,17 @@ class _HomeScreenState extends State<HomeScreen> {
     final confirmed = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
         title: const Text("Clear All Tasks"),
         content: const Text("Are you sure you want to delete all tasks?"),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text("Cancel"),
+            child: const Text("Cancel", style: TextStyle(color: Colors.black)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text("Clear", style: TextStyle(color: Colors.red)),
+            child: const Text("Clear", style: TextStyle(color: Colors.red , fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -66,14 +67,11 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text("Cancel"),
+            child: const Text("Cancel", style: TextStyle(color: Colors.black)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text(
-              "Clear",
-              style: TextStyle(color: Colors.red),
-            ),
+            child: const Text("Clear", style: TextStyle(color: Colors.red , fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -170,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontSize: 16,
                         ),
                       ),
-                      onTap: () {
+                      onTap: tasks.isEmpty ? null : () {
                         Navigator.pop(context);
                         _clearTasks();
                       },
@@ -188,10 +186,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontSize: 16,
                         ),
                       ),
-                      onTap: () {
+                      onTap: tasks.any((t) => t.status == 1)
+                          ? () {
                         Navigator.pop(context);
                         _clearFinishedTasks();
-                      },
+                      }
+                          : null,
                     ),
                   ],
                 ),
