@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       endDrawer: Drawer(
         width: MediaQuery.of(context).size.width * 0.6,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   'TaskFlow',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.black.withOpacity(0.8),
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-              const Divider(color: Colors.white24),
+              const Divider(color: Colors.black),
 
               // 🔹 Menu Items
               Expanded(
@@ -161,12 +161,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ListTile(
                       leading: const Icon(
                         Icons.delete_sweep_outlined,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                       title: const Text(
                         'Clear All Tasks',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 16,
                         ),
                       ),
@@ -179,12 +179,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ListTile(
                       leading: const Icon(
                         Icons.cleaning_services_outlined,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                       title: const Text(
                         'Clear Finished Tasks',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 16,
                         ),
                       ),
@@ -197,16 +197,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
-              const Divider(color: Colors.white24),
+              const Divider(color: Colors.black),
 
-              // 🔹 Footer (optional)
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: Text(
-                  'v1.0.0 | Klara Sameh',
-                  style: TextStyle(
-                    color: Colors.white38,
-                    fontSize: 12,
+                child: Center(
+                  child: Text(
+                    'v1.0.0 | Klara Sameh',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
               ),
