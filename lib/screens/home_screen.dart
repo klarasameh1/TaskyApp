@@ -1,5 +1,6 @@
 import 'package:first_app/widgets/appBar.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../dialogs/addDialog.dart';
 import '../widgets/stats_card.dart';
 import 'allTasks.dart';
@@ -8,9 +9,8 @@ import '../database/helper/dp_helper.dart';
 import '../models/Task.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String userName;
 
-  const HomeScreen({super.key, required this.userName});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -19,11 +19,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedItem = 0; // index for the bottom navbar
   List<MapEntry<dynamic, Task>> tasks = []; // Hive key + Task
+  String userName = "User"; // default fallback
 
   @override
   void initState() {
     super.initState();
     _loadTasks(); // load tasks when screen is opened
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('userName') ?? "User";
+    });
   }
 
   Future<void> _loadTasks() async {
@@ -86,14 +95,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     // number of pending tasks
     final pendingCount = tasks.where((entry) => entry.value.status == 0).length;
-
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
 
       body: Column(
         children: [
-          CustomAppBar(userName: widget.userName, count: pendingCount),
+          CustomAppBar(userName: userName, count: pendingCount),
           Expanded(
             child: Builder(
               builder: (_) {

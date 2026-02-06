@@ -1,5 +1,6 @@
 import 'package:first_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -12,6 +13,21 @@ class _WelcomePageState extends State<WelcomePage> {
   String userName = '';
   final TextEditingController _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> _goNext(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstTime', false);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => HomeScreen()),
+    );
+  }
+
+  Future<void> _saveName(BuildContext context , String name) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userName', name);
+  }
 
   @override
   void dispose() {
@@ -79,6 +95,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       if (value.trim().length < 3) {
                         return 'Name must be at least 3 characters';
                       }
+                      _saveName(context, userName); // to easy access then
                       return null;
                     },
                     decoration: InputDecoration(
@@ -114,18 +131,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         ),
                         elevation: 4,
                       ),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(
-                                userName: _nameController.text.trim(),
-                              ),
-                            ),
-                          );
-                        }
-                      },
+                      onPressed:  () => _goNext(context),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
