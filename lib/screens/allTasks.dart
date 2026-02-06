@@ -19,16 +19,11 @@ class AllTasks extends StatelessWidget {
     } else if (task.status == 1) {
       newStatus = 0; // completed -> pending
     } else {
-      newStatus = task.status; // archived stays archived
+      newStatus = task.status;
     }
 
     await DBHelper.updateTaskStatus(key, newStatus);
     refresh(); // reload tasks from database
-  }
-
-  Future<void> archiveTask(dynamic key) async {
-    await DBHelper.updateTaskStatus(key, 2);
-    refresh();
   }
 
   Future<void> deleteTask(dynamic key) async {
@@ -38,8 +33,7 @@ class AllTasks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Only show non-archived tasks
-    final tasksList = tasksWithKeys.where((entry) => entry.value.status != 2).toList();
+    final tasksList = tasksWithKeys.toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),

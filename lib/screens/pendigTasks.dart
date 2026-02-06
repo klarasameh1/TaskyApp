@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../dialogs/editDialog.dart';
-import '../dialogs/expandDialog.dart';
 import '../widgets/TaskListTile.dart';
 import '../models/Task.dart';
 import '../database/helper/dp_helper.dart';
+import 'expandTask.dart';
 
 class PendingTasks extends StatelessWidget {
   final List<MapEntry<dynamic, Task>> tasksWithKeys; // Hive key + Task
@@ -13,11 +13,6 @@ class PendingTasks extends StatelessWidget {
 
   Future<void> toggleStatus(dynamic key, Task task) async {
     await DBHelper.updateTaskStatus(key, 1); // mark as done
-    refresh();
-  }
-
-  Future<void> archiveTask(dynamic key) async {
-    await DBHelper.updateTaskStatus(key, 2); // mark as archived
     refresh();
   }
 
@@ -65,10 +60,21 @@ class PendingTasks extends StatelessWidget {
               onToggle: () => toggleStatus(key, task),
               onEdit: () => showEditDialog(context, key, task, refresh), // ✅ pass key
               onDelete: () => deleteTask(key),
-              onExpand: () => showDialog(
-                context: context,
-                builder: (_) => expandDialog(context, task),
-              ),
+              onExpand: () async {
+                final deleted = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => Expandtask(
+                      keyId: key, // ✅ pass Hive key
+                      task: task,
+                    ),
+                  ),
+                );
+
+                if (deleted == true) {
+                  refresh(); // reload tasks
+                }
+              },
             ),
           );
         },

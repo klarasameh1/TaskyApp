@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import '../../models/Task.dart';
 
-/// Hive-based Database helper class for tasks (no manual id)
+/// Hive-based Database helper class for tasks
 class DBHelper {
   static const String _boxName = 'tasks';
   static Box? _box;
