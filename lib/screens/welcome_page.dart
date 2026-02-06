@@ -17,7 +17,7 @@ class _WelcomePageState extends State<WelcomePage> {
   Future<void> _goNext(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isFirstTime', false);
-
+    await prefs.setString('userName', userName);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => HomeScreen()),
