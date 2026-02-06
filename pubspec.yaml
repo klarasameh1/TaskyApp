@@ -1,4 +1,4 @@
-name: first_app
+name: TaskFlow
 description: "Task Flow App"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -35,6 +35,17 @@ dev_dependencies:
     sdk: flutter
   hive_generator: ^2.0.0
   build_runner: ^2.4.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: true
+  ios: true
+  web:
+    generate: true
+    image_path: "assets/newLogo.png"
+    background_color: "#FFFFFF"
+    theme_color: "#000000"
+  image_path: "assets/newLogo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
